@@ -1,9 +1,9 @@
-import { baseAppHtml, UserView } from '../view/baseView.js';
-const startApp = new UserView;
+import { baseAppHtml, AppView } from '../view/baseView.js';
+const startApp = new AppView;
 // baseAppHtml.init();
 
 
-export function addProjectController(projectObject) {
+function addProjectHandler(projectObject) {
     let projectTitle = baseAppHtml.projectForm.value;
     console.log(projectTitle);
 }

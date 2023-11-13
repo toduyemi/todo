@@ -1,5 +1,4 @@
 
-import { addProjectController } from '../controller/index';
 export const baseAppHtml = {
     body: document.body,
     appHeader: document.createElement('header'),
@@ -107,9 +106,30 @@ export const baseAppHtml = {
 
 
 }
-
-export class UserView {
+/**
+ * Base class for dom view 
+ */
+class View {
+    /**
+     * listeners will listen for dom changes such as project or 
+     * task form and then bind event listeners
+     */
     constructor() {
+        this._listeners = [];
+    }
+
+    addChangeListener(handler) {
+        this._listeners.push(handler);
+    }
+
+    raiseChange() {
+        this._listeners.forEach(listener => listener());
+    }
+}
+
+export class AppView extends View {
+    constructor() {
+        super();
         this.body = document.body;
         this.appHeader = this.createElement('header');
         this.appTitle = this.createElement('h1');
@@ -123,28 +143,37 @@ export class UserView {
         this.addTaskBtn = this.createElement('button');
         this.addProjectBtn = this.createElement('button', 'nav-btn', 'Add Project');
         this.displayHeader = this.createElement('h1');
-        this.projectForm = this.createElement('form');
+        this.projectForm = this.createElement('form', 'add-project-form');
         this.createInput({
             key: 'projectTitleInput',
             type: 'text',
             placeholder: 'Project Title',
-            name: 'project-title'
+            class: 'project-title'
         });
-        this.addButton = document.createElement('button', 'project-btn', 'Add');
-        this.cancelButton = document.createElement('button', 'project-btn', 'Add Task');
+        this.addButton = this.createElement('button', 'project-btn', 'Add');
+        this.cancelButton = this.createElement('button', 'project-btn', 'Cancel');
         this.tempHtmlInit();
+        this.addChangeListener(this.bindAddProjectHandler);
+
+        this.bindEvents();
+
+    }
+
+    bindEvents() {
+        this.addProjectBtn.addEventListener('click', this.tempBuildProjectForm.bind(this));
 
     }
 
     tempHtmlInit() {
         this.projectForm.append(this.projectTitleInput, this.addButton, this.cancelButton);
-        this.body.append(this.addProjectBtn)
+        this.body.append(this.addProjectBtn);
     }
 
-    createInput({ key, type, placeholder }) {
+    createInput({ key, type, placeholder, className }) {
         this[key] = this.createElement('input');
         this[key].type = type;
         this[key].placeholder = placeholder;
+        this[key].classList.add(className);
     }
 
     createElement(tag, className, childHTML) {
@@ -158,13 +187,30 @@ export class UserView {
 
     buildProjectForm() {
         this.projectsUl.appendChild(this.projectFormLi);
+
         this.addProjectBtn.remove();
 
     }
 
-    buildProjectForm() {
-        this.projectsUl.appendChild(this.projectFormLi);
+    tempBuildProjectForm() {
         this.addProjectBtn.remove();
-
+        this.body.appendChild(this.projectForm);
+        this.raiseChange();
     }
+
+    bindAddProjectHandler() {
+        if (document.querySelector('.add-project-form')) {
+            this.projectForm.addEventListener('submit', this.submitAddProjectEvent);
+        }
+    }
+
+
+
+    submitAddProjectEvent(e) {
+        e.preventDefault();
+        // addProjectController();
+        // this.projectsUl.removeChild(this.projectFormLi);
+        // this.sideNav.appendChild(this.addProjectBtn);
+    }
+
 }
