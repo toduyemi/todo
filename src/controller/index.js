@@ -10,9 +10,12 @@ function addProjectHandler(projectObject) {
 }
 
 class AppController {
-    constructor(AppView, AppModel) {
-        this.appView = AppView;
-        this.appModel = AppModel;
+    constructor(/*AppView, AppModel*/) {
+        this.appView = new AppView();
+        this.appModel = new UserDataModel();
+
+        //add DOM event listener
+        this.appView.addChangeListener(this.appView.bindAddProjectForm)
     }
 
     handleAddProject({ projectTitle }) {
@@ -20,4 +23,4 @@ class AppController {
     }
 }
 
-const startApp = new AppController(new AppView, new UserDataModel);
+const startApp = new AppController(/* new AppView, new UserDataModel */);
