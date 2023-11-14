@@ -15,11 +15,12 @@ class AppController {
         this.appModel = new UserDataModel();
 
         //add DOM event listener
-        this.appView.addChangeListener(this.appView.bindAddProjectForm)
+        this.appView.addChangeListener(() => this.appView.bindAddProjectForm(this.handleAddProject.bind(this)));
     }
 
-    handleAddProject({ projectTitle }) {
-        this.appModel.addProject({ title: projectTitle })
+    handleAddProject(projectTitle) {
+        console.log(projectTitle)
+        this.appModel.addProject(projectTitle)
     }
 }
 

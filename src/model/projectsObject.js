@@ -1,17 +1,17 @@
 
 export class Project {
-    constructor({ project }) {
+    constructor(project) {
         // super();
-        this.title = project.title;
-        this.tasks = [];
+        this._title = project.title;
+        this._tasks = [];
     }
 
     get title() {
-        return this.title;
+        return this._title;
     }
 
     set title(value) {
-        this.title = value;
+        this._title = value;
     }
 
     get tasks() {
@@ -22,11 +22,11 @@ export class Project {
 
         //ensure input is a truthy object that is not an array
         if (value && typeof value === 'object' && !Array.isArray(value)) {
-            this.tasks.push(value);
+            this._tasks.push(value);
         }
 
         if (value && value instanceof Task && !Array.isArray(value)) {
-            this.tasks.push(value);
+            this._tasks.push(value);
         }
     }
 }

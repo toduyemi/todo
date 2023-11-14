@@ -153,7 +153,7 @@ export class AppView extends View {
         this.addButton = this.createElement('button', 'project-btn', 'Add');
         this.cancelButton = this.createElement('button', 'project-btn', 'Cancel');
         this.tempHtmlInit();
-        this.addChangeListener(this.bindAddProjectForm.bind(this));
+        // this.addChangeListener(this.bindAddProjectForm.bind(this));
 
         this.bindEvents();
 
@@ -215,10 +215,11 @@ export class AppView extends View {
 
 
     _removeProjectForm() {
+        this.body.removeChild(this.projectForm);
+        this.body.appendChild(this.addProjectBtn);
 
-
-        this.projectsUl.removeChild(this.projectFormLi);
-        this.sideNav.appendChild(this.addProjectBtn);
+        // this.projectsUl.removeChild(this.projectFormLi);
+        // this.sideNav.appendChild(this.addProjectBtn);
     }
 
 }

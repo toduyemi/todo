@@ -97,7 +97,7 @@ export class UserDataModel {
         }
 
         else {
-            this.projects.push(new Project({ projectObject }));
+            this._projects.push(new Project({ projectObject }));
             console.log('200');
         }
 
