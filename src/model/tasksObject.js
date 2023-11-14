@@ -1,6 +1,5 @@
-import userData from './model.js';
-import Model from './model.js'
-export default class Task extends Model {
+
+export class Task {
 
     /* valid values for prioties; 
     0 => No Deadline/urgency;
@@ -18,7 +17,7 @@ export default class Task extends Model {
      * @param {string} status 
      */
     constructor(title, description, dueDate, currentDate, priority) {
-        super();
+        // super();
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;

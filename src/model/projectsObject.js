@@ -1,7 +1,7 @@
-import Model from './model.js';
-export default class Project extends Model {
-    constructor(project) {
-        super();
+
+export class Project {
+    constructor({ project }) {
+        // super();
         this.title = project.title;
         this.tasks = [];
     }

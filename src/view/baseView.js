@@ -153,7 +153,7 @@ export class AppView extends View {
         this.addButton = this.createElement('button', 'project-btn', 'Add');
         this.cancelButton = this.createElement('button', 'project-btn', 'Cancel');
         this.tempHtmlInit();
-        this.addChangeListener(this.bindAddProjectHandler);
+        this.addChangeListener(this.bindAddProjectForm.bind(this));
 
         this.bindEvents();
 
@@ -198,19 +198,27 @@ export class AppView extends View {
         this.raiseChange();
     }
 
-    bindAddProjectHandler() {
+    bindAddProjectForm(handler) {
         if (document.querySelector('.add-project-form')) {
-            this.projectForm.addEventListener('submit', this.submitAddProjectEvent);
+            this.projectForm.addEventListener('submit', e => {
+                e.preventDefault();
+
+                if (this.projectTitleInput.value) {
+                    handler({ title: this.projectTitleInput.value });
+                }
+
+                this._removeProjectForm();
+            });
         }
     }
 
 
 
-    submitAddProjectEvent(e) {
-        e.preventDefault();
-        // addProjectController();
-        // this.projectsUl.removeChild(this.projectFormLi);
-        // this.sideNav.appendChild(this.addProjectBtn);
+    _removeProjectForm() {
+
+
+        this.projectsUl.removeChild(this.projectFormLi);
+        this.sideNav.appendChild(this.addProjectBtn);
     }
 
 }
