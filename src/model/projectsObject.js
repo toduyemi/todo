@@ -3,6 +3,7 @@ export class Project {
     constructor(project) {
         // super();
         this._title = project.title;
+        this._id = project.id;
         this._tasks = [];
     }
 
@@ -15,7 +16,7 @@ export class Project {
     }
 
     get tasks() {
-        return this.tasks.slice();
+        return this._tasks.slice();
     }
 
     set tasks(value) {

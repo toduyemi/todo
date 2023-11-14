@@ -80,7 +80,7 @@ export class UserDataModel {
     //PROJECT CRUD METHODS
 
     getProjects() {
-        return this.projects;
+        return this._projects;
     }
 
     getProject(projectId) {
@@ -97,7 +97,9 @@ export class UserDataModel {
         }
 
         else {
-            this._projects.push(new Project({ projectObject }));
+            this._projects.push(new Project({ title: projectObject.title, id: this._projects.length }));
+
+            console.log(this._projects)
             console.log('200');
         }
 
@@ -113,6 +115,9 @@ export class UserDataModel {
 
     }
     deleteProject() {
+
+    }
+    setProjectIds() {
 
     }
 

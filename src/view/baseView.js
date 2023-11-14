@@ -185,7 +185,7 @@ export class AppView extends View {
         return element;
     }
 
-    buildProjectForm() {
+    _buildProjectForm() {
         this.projectsUl.appendChild(this.projectFormLi);
 
         this.addProjectBtn.remove();
@@ -200,26 +200,50 @@ export class AppView extends View {
 
     bindAddProjectForm(handler) {
         if (document.querySelector('.add-project-form')) {
-            this.projectForm.addEventListener('submit', e => {
+            //add reference to anonymous arrow function so i can remove event Listener
+            this.projectForm.addEventListener('submit', this.projectForm.binder = e => {
                 e.preventDefault();
 
                 if (this.projectTitleInput.value) {
                     handler({ title: this.projectTitleInput.value });
+
+                    //clean up successful submit
+                    this._removeProjectForm();
                 }
 
-                this._removeProjectForm();
+                else {
+                    throw new Error("Title field input required!")
+                }
             });
         }
+
+
     }
 
 
 
     _removeProjectForm() {
-        this.body.removeChild(this.projectForm);
+        this.projectForm.removeEventListener('submit', this.projectForm.binder);
+        this.projectTitleInput.value = "";
+        this.projectForm.remove();
         this.body.appendChild(this.addProjectBtn);
 
         // this.projectsUl.removeChild(this.projectFormLi);
         // this.sideNav.appendChild(this.addProjectBtn);
     }
 
+    displayProjectList(projectsList) {
+        if (projectsList.length === 0) {
+
+        }
+
+        //create project list item nodes
+        projectsList.map(project => {
+            const projectLi = this.createElement('li');
+            projectLi.id = project.id;
+        })
+
+    }
+
 }
+
