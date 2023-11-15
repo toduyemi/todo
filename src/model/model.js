@@ -79,8 +79,8 @@ export class UserDataModel {
 
     //PROJECT CRUD METHODS
 
-    getProjects() {
-        return this._projects;
+    get projectsList() {
+        return this._projects.slice();
     }
 
     getProject(projectId) {

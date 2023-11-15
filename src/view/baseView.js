@@ -137,7 +137,7 @@ export class AppView extends View {
         this.sideNav = this.createElement('nav');
         this.appCtr = this.createElement('div');
         this.projectsDiv = this.createElement('div');
-        this.projectsUl = this.createElement('ul');
+        this.projectsUl = this.createElement('ul', 'project-list');
         this.homeUl = this.createElement('ul');
         this.homeDiv = this.createElement('div');
         this.addTaskBtn = this.createElement('button');
@@ -166,7 +166,7 @@ export class AppView extends View {
 
     tempHtmlInit() {
         this.projectForm.append(this.projectTitleInput, this.addButton, this.cancelButton);
-        this.body.append(this.addProjectBtn);
+        this.body.append(this.projectsUl, this.addProjectBtn);
     }
 
     createInput({ key, type, placeholder, className }) {
@@ -179,7 +179,7 @@ export class AppView extends View {
     createElement(tag, className, childHTML) {
         const element = document.createElement(tag);
 
-        if (className) element.classList.add(className);
+        if (className) element.className = className;
 
         if (childHTML) element.innerHTML = childHTML;
         return element;
@@ -227,21 +227,42 @@ export class AppView extends View {
         this.projectTitleInput.value = "";
         this.projectForm.remove();
         this.body.appendChild(this.addProjectBtn);
+        this.raiseChange();
 
         // this.projectsUl.removeChild(this.projectFormLi);
         // this.sideNav.appendChild(this.addProjectBtn);
     }
 
     displayProjectList(projectsList) {
-        if (projectsList.length === 0) {
 
+        while (this.projectsUl.firstChild) {
+            this.projectsUl.textContent = '';
+        }
+
+        //show a default message
+        if (projectsList.length === 0) {
+            const def = this.createElement('p');
+            def.textContent = 'No projects! Add new project!';
+            this.projectsUl.append(def);
         }
 
         //create project list item nodes
-        projectsList.map(project => {
-            const projectLi = this.createElement('li');
-            projectLi.id = project.id;
-        })
+        else {
+            console.log(projectsList);
+            projectsList.map(project => {
+                const projectLi = this.createElement('li', 'project-list-item');
+                projectLi.id = project.id;
+
+                const spanTitle = this.createElement('span', 'project-title-span editable');
+                spanTitle.contentEditable = true;
+                spanTitle.textContent = project.title;
+
+                projectLi.append(spanTitle);
+
+                this.projectsUl.append(projectLi);
+
+            });
+        }
 
     }
 

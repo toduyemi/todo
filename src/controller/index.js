@@ -14,8 +14,18 @@ class AppController {
         this.appView = new AppView();
         this.appModel = new UserDataModel();
 
-        //add DOM event listener
+        //add DOM event listeners to bind event listener to project form
         this.appView.addChangeListener(() => this.appView.bindAddProjectForm(this.handleAddProject.bind(this)));
+
+        //refresh list sidenav project list
+        this.appView.addChangeListener(() => this.newProjectDomTrigger(this.appModel.projectsList));
+
+        //display initial project list
+        this.newProjectDomTrigger(this.appModel.projectsList);
+    }
+
+    newProjectDomTrigger(projectsList) {
+        this.appView.displayProjectList(projectsList);
     }
 
     handleAddProject(projectTitle) {

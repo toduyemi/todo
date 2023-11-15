@@ -15,6 +15,10 @@ export class Project {
         this._title = value;
     }
 
+    get id() {
+        return this._id;
+    }
+
     get tasks() {
         return this._tasks.slice();
     }
