@@ -136,13 +136,63 @@ export class AppView extends View {
         this.sideNavSvgCtr = this.createElement('div');
         this.sideNav = this.createElement('nav');
         this.appCtr = this.createElement('div');
+        this.appCtrUl = this.createElement('ul');
         this.projectsDiv = this.createElement('div');
         this.projectsUl = this.createElement('ul', 'project-list');
         this.homeUl = this.createElement('ul');
         this.homeDiv = this.createElement('div');
-        this.addTaskBtn = this.createElement('button');
-        this.addProjectBtn = this.createElement('button', 'nav-btn', 'Add Project');
+
+
         this.displayHeader = this.createElement('h1');
+
+
+        //task form elements
+        this.addTaskBtn = this.createElement('button', 'app-btn', 'Add Task');
+        this.taskForm = this.createElement('form', 'add-project-form');
+        this.createInput({
+            key: 'taskTitleInput',
+            type: 'text',
+            placeholder: 'Task Title',
+            class: 'task-title'
+        });
+        this.descriptionText = this.createElement('textarea', 'description-input');
+        this.descriptionText.setAttribute('placeholder', 'Description...');
+
+        this.createInput({
+            key: 'taskDueDateInput',
+            type: 'date',
+            placeholder: 'Task Title',
+            class: 'task-date'
+        });
+
+        this.priorityFieldset = this.createElement('fieldset');
+        this.priorityLegend = this.createElement('legend', 'priority-legend', 'Priority:');
+        this.createInput({
+            key: 'priorityHigh',
+            type: 'radio',
+            class: 'task-priority',
+            id: 'high-priority'
+
+        });
+
+        this.createInput({
+            key: 'priorityMed',
+            type: 'radio',
+            class: 'task-priority',
+            id: 'med-priority'
+        });
+        this.createInput({
+            key: 'priorityLow',
+            type: 'radio',
+            class: 'task-priority',
+            id: 'low-priority'
+        });
+
+        this.submitTaskBtn = this.createElement('button', 'task-btn', 'Add');
+        this.cancelTaskBtn = this.createElement('button', 'task-btn', 'Cancel');
+
+        //project form elements
+        this.addProjectBtn = this.createElement('button', 'nav-btn', 'Add Project');
         this.projectForm = this.createElement('form', 'add-project-form');
         this.createInput({
             key: 'projectTitleInput',
@@ -152,6 +202,9 @@ export class AppView extends View {
         });
         this.addButton = this.createElement('button', 'project-btn', 'Add');
         this.cancelButton = this.createElement('button', 'project-btn', 'Cancel');
+
+
+
         this.tempHtmlInit();
         // this.addChangeListener(this.bindAddProjectForm.bind(this));
 
@@ -160,19 +213,31 @@ export class AppView extends View {
     }
 
     bindEvents() {
-        this.addProjectBtn.addEventListener('click', this.tempBuildProjectForm.bind(this));
+        this.addProjectBtn.addEventListener('click', this._buildProjectForm.bind(this));
+        this.addTaskBtn.addEventListener('click', this._buildAddTaskForm.bind(this))
 
     }
 
     tempHtmlInit() {
+
         this.projectForm.append(this.projectTitleInput, this.addButton, this.cancelButton);
-        this.body.append(this.projectsUl, this.addProjectBtn);
+        this.sideNav.append(this.projectsUl, this.addProjectBtn)
+        this.appCtr.append(this.appCtrUl, this.addTaskBtn)
+
+        //task
+        this.priorityFieldset.append(this.priorityLegend, this.priorityLow, this.priorityMed, this.priorityHigh);
+        this.taskForm.append(this.taskTitleInput, this.descriptionText, this.taskDueDateInput, this.priorityFieldset, this.submitTaskBtn, this.cancelTaskBtn);
+
+        this.body.append(this.sideNav, this.appCtr);
+
+
     }
 
-    createInput({ key, type, placeholder, className }) {
+    createInput({ key, type, placeholder, className, id }) {
         this[key] = this.createElement('input');
         this[key].type = type;
-        this[key].placeholder = placeholder;
+        if (placeholder) this[key].placeholder = placeholder;
+        if (id) this[key].id = id
         this[key].classList.add(className);
     }
 
@@ -185,16 +250,16 @@ export class AppView extends View {
         return element;
     }
 
-    _buildProjectForm() {
-        this.projectsUl.appendChild(this.projectFormLi);
 
-        this.addProjectBtn.remove();
+    _buildAddTaskForm() {
+        this.appCtr.append(this.taskForm);
+        this.addTaskBtn.remove();
 
     }
 
-    tempBuildProjectForm() {
+    _buildProjectForm() {
         this.addProjectBtn.remove();
-        this.body.appendChild(this.projectForm);
+        this.sideNav.appendChild(this.projectForm);
         this.raiseChange();
     }
 
@@ -216,8 +281,6 @@ export class AppView extends View {
                 }
             });
         }
-
-
     }
 
 
@@ -226,7 +289,7 @@ export class AppView extends View {
         this.projectForm.removeEventListener('submit', this.projectForm.binder);
         this.projectTitleInput.value = "";
         this.projectForm.remove();
-        this.body.appendChild(this.addProjectBtn);
+        this.sideNav.appendChild(this.addProjectBtn);
         this.raiseChange();
 
         // this.projectsUl.removeChild(this.projectFormLi);

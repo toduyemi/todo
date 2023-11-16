@@ -14,7 +14,7 @@ export class TaskView {
         /* use innerhtml to create task object for readability; inject task title 
         from use via textContent to prevent malicious injection*/
         let taskTemplate = `
-            <ul class="task-ctr" data-taskId="${this._task.id}">
+            <ul class="task-ctr" data-task-id="${this._task.id}">
                 <li class="task-check" ><input type="checkbox" name="check-toggle" id=""></li>
                 <li class="task-title"></li>
                 <li class="task-deadline">${this._task.dueDate}</li>
