@@ -283,6 +283,19 @@ export class AppView extends View {
         }
     }
 
+    bindProjectList(handler) {
+        //only run if a project has been added
+        if (document.querySelector('.project-list li')) {
+            this.projectsUl.addEventListener('click', e => {
+                //either stores data-index or outputs array; trigger and handle
+                handler();
+
+            })
+        }
+    }
+
+
+
 
 
     _removeProjectForm() {

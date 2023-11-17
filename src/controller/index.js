@@ -1,5 +1,8 @@
 import { baseAppHtml, AppView } from '../view/baseView.js';
 import { UserDataModel } from "../model/model.js";
+
+import '../../style.css';
+
 // const startApp = new AppView;
 // baseAppHtml.init();
 
@@ -24,13 +27,18 @@ class AppController {
         this.newProjectDomTrigger(this.appModel.projectsList);
     }
 
+    //trigger for things going to DOM
     newProjectDomTrigger(projectsList) {
         this.appView.displayProjectList(projectsList);
     }
 
+    //handle for things incoming from DOM
     handleAddProject(projectTitle) {
         console.log(projectTitle)
         this.appModel.addProject(projectTitle)
+    }
+    _observeProjectState() {
+        //everytime a project is clicked store its index number from data index
     }
 }
 
