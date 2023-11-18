@@ -2,62 +2,64 @@
 export class Task {
 
     /* valid values for prioties; 
-    0 => No Deadline/urgency;
-    1 => Needs to be done but not urgent;
-    2 => Urgent and deadline imminent */
+    1 => No Deadline/urgency;
+    2 => Needs to be done but not urgent;
+    3 => Urgent and deadline imminent */
 
-    priorities = [0, 1, 2];
+    priorities = [1, 2, 3];
     /**
-     * 
+     * task argument is a FormData object
      * @param {string} title 
      * @param {string} description 
      * @param {Date} dueDate 
      * @param {Date} currentDate 
      * @param {string} priority 
      * @param {string} status 
+     * @param {int} id
      */
-    constructor(title, description, dueDate, currentDate, priority) {
+    constructor(task) {
         // super();
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.datePosted = currentDate;
-        this.priority = priority;
-        this.status = false;
+        this._title = task.get('title');
+        this._description = task.get('description');
+        this._dueDate = task.get('due-date');
+        this._datePosted = new Date();
+        this._priority = task.get('priority');
+        this._status = false;
+        this._id;
     }
 
     get title() {
-        return this.title;
+        return this._title;
     }
 
     set title(value) {
         if (!value) {
             throw new Error('Title is required.');
         }
-        this.title = value;
+        this._title = value;
     }
 
     get description() {
-        return this.description;
+        return this._description;
     }
 
     set description(value) {
-        this.description = value;
+        this._description = value;
     }
 
     get dueDate() {
-        return this.description;
+        return this._dueDate;
     }
 
     set dueDate(value) {
         if (!value instanceof Date) {
             throw new Error('Date input invalid.')
         }
-        this.dueDate = value;
+        this._dueDate = value;
     }
 
     get datePosted() {
-        return this.datePosted;
+        return this._datePosted;
     }
 
     //read only should not be able to change
@@ -65,24 +67,26 @@ export class Task {
     //     this.datePosted = value;
     // }
     get priority() {
-        return this.priority;
+        return this._priority;
     }
 
     set priority(value) {
         if (priorities.includes(value)) {
-            this.priority = value;
+            this._priority = value;
         }
     }
 
     get status() {
-        return this.status;
+        return this._status;
+    }
+
+    set id(value) {
+        this._id = value;
     }
 
     toggleStatus() {
         this.status = !this.status;
     }
 
-    setId() {
-        this.id = userData.tasks.indexOf(this);
-    }
+
 }

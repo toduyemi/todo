@@ -11,8 +11,9 @@ class AppController {
         this.appModel = new UserDataModel();
         this.currentProjectIndex = null;
 
-        //add DOM event listeners to bind event listener to project form
+        //add DOM event listeners to bind event listener to forms
         this.appView.addChangeListener(() => this.appView.bindAddProjectForm(this.handleAddProject.bind(this)));
+        this.appView.addChangeListener(() => this.appView.bindAddTaskForm(this.handleAddTask.bind(this)));
 
         //refresh list sidenav project list
         this.appView.addChangeListener(() => this.newProjectDomTrigger(this.appModel.projectsList));
@@ -34,7 +35,12 @@ class AppController {
 
     handleAddProject(projectTitle) {
         console.log(projectTitle)
-        this.appModel.addProject(projectTitle)
+        this.appModel.addProject(projectTitle);
+    }
+
+    handleAddTask(taskData) {
+        console.log(taskData);
+        this.appModel.addTask(taskData);
     }
 
     //everytime a project is clicked store its index number from data index

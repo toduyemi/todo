@@ -38,11 +38,12 @@ export class UserDataModel {
 
     }
     addTask(taskObject) {
-        if (!taskObject instanceof Task) {
+        if (!taskObject instanceof FormData) {
             throw new Error('401 - Not a task object');
         }
         else {
-            this.tasks.push(taskObject);
+            this._tasks.push(new Task(taskObject));
+            console.log(this._tasks[0])
             console.log('200');
             //logic to push to project array as well 
         }

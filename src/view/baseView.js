@@ -151,41 +151,53 @@ export class AppView extends View {
         this.taskForm = this.createElement('form', 'add-task-form');
         this.createInput({
             key: 'taskTitleInput',
+            name: 'title',
             type: 'text',
             placeholder: 'Task Title',
-            class: 'task-title'
+            class: 'task-title',
+            required: 1
         });
         this.descriptionText = this.createElement('textarea', 'description-input');
         this.descriptionText.setAttribute('placeholder', 'Description...');
+        this.descriptionText.setAttribute('name', 'description')
 
         this.createInput({
             key: 'taskDueDateInput',
+            name: 'due-date',
             type: 'date',
             placeholder: 'Task Title',
-            class: 'task-date'
+            className: 'task-date',
+            required: 1
         });
 
         this.priorityFieldset = this.createElement('fieldset');
         this.priorityLegend = this.createElement('legend', 'priority-legend', 'Priority:');
         this.createInput({
             key: 'priorityHigh',
+            name: 'priority',
             type: 'radio',
-            class: 'task-priority',
-            id: 'high-priority'
-
+            className: 'task-priority',
+            id: 'high-priority',
+            required: 1,
+            value: 3
         });
 
         this.createInput({
             key: 'priorityMed',
+            name: 'priority',
             type: 'radio',
-            class: 'task-priority',
-            id: 'med-priority'
+            className: 'task-priority',
+            id: 'med-priority',
+            value: 2
+
         });
         this.createInput({
             key: 'priorityLow',
+            name: 'priority',
             type: 'radio',
-            class: 'task-priority',
-            id: 'low-priority'
+            className: 'task-priority',
+            id: 'low-priority',
+            value: 1
         });
 
         this.submitTaskBtn = this.createElement('button', 'task-btn', 'Add');
@@ -198,8 +210,12 @@ export class AppView extends View {
             key: 'projectTitleInput',
             type: 'text',
             placeholder: 'Project Title',
-            class: 'project-title'
+            className: 'project-title',
+            name: 'title',
+            required: 1
+
         });
+        this.projectTitleInput.required = true;
         this.addButton = this.createElement('button', 'project-btn', 'Add');
         this.cancelButton = this.createElement('button', 'project-btn', 'Cancel');
 
@@ -233,12 +249,15 @@ export class AppView extends View {
 
     }
 
-    createInput({ key, type, placeholder, className, id }) {
+    createInput({ key, type, placeholder, className, id, required, name, value }) {
         this[key] = this.createElement('input');
         this[key].type = type;
-        if (placeholder) this[key].placeholder = placeholder;
-        if (id) this[key].id = id
         this[key].classList.add(className);
+        this[key].name = name;
+        this[key].placeholder = placeholder;
+        if (value) this[key].value = value;
+        if (id) this[key].id = id;
+        if (required) this[key].required = true;
     }
 
     createElement(tag, className, childHTML) {
@@ -276,10 +295,15 @@ export class AppView extends View {
         // this.sideNav.appendChild(this.addProjectBtn);
     }
 
-    bindAddProjectForm(handler) {
+    bindAddTaskForm(handler) {
         if (document.querySelector('.add-task-form')) {
 
-            this.project
+            this.taskForm.addEventListener('submit', this.taskForm.binder = e => {
+                e.preventDefault();
+
+                handler(new FormData(this.taskForm));
+
+            })
         }
     }
 
