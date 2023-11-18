@@ -148,7 +148,7 @@ export class AppView extends View {
 
         //task form elements
         this.addTaskBtn = this.createElement('button', 'app-btn', 'Add Task');
-        this.taskForm = this.createElement('form', 'add-project-form');
+        this.taskForm = this.createElement('form', 'add-task-form');
         this.createInput({
             key: 'taskTitleInput',
             type: 'text',
@@ -254,6 +254,7 @@ export class AppView extends View {
     _buildAddTaskForm() {
         this.appCtr.append(this.taskForm);
         this.addTaskBtn.remove();
+        this.raiseChange();
 
     }
 
@@ -262,6 +263,27 @@ export class AppView extends View {
         this.sideNav.appendChild(this.projectForm);
         this.raiseChange();
     }
+
+    _removeProjectForm() {
+        this.projectForm.removeEventListener('submit', this.projectForm.binder);
+        this.projectForm.removeEventListener('click', this.projectForm.cancel);
+        this.projectTitleInput.value = "";
+        this.projectForm.remove();
+        this.sideNav.appendChild(this.addProjectBtn);
+        this.raiseChange();
+
+        // this.projectsUl.removeChild(this.projectFormLi);
+        // this.sideNav.appendChild(this.addProjectBtn);
+    }
+
+    bindAddProjectForm(handler) {
+        if (document.querySelector('.add-task-form')) {
+
+            this.project
+        }
+    }
+
+
 
     bindAddProjectForm(handler) {
         if (document.querySelector('.add-project-form')) {
@@ -280,34 +302,31 @@ export class AppView extends View {
                     throw new Error("Title field input required!")
                 }
             });
+
+            this.cancelButton.addEventListener('click', this.projectForm.cancel = e => {
+                e.preventDefault();
+                this._removeProjectForm();
+            })
         }
     }
 
     bindProjectList(handler) {
         //only run if a project has been added
-        if (document.querySelector('.project-list li')) {
-            this.projectsUl.addEventListener('click', e => {
-                //either stores data-index or outputs array; trigger and handle
-                handler();
 
-            })
-        }
+        this.projectsUl.addEventListener('click', e => {
+            //either stores data-index or outputs array; trigger and handle
+            if (document.querySelector('.project-list li')) {
+                handler(e.target);
+            }
+        })
+
     }
 
 
 
 
 
-    _removeProjectForm() {
-        this.projectForm.removeEventListener('submit', this.projectForm.binder);
-        this.projectTitleInput.value = "";
-        this.projectForm.remove();
-        this.sideNav.appendChild(this.addProjectBtn);
-        this.raiseChange();
 
-        // this.projectsUl.removeChild(this.projectFormLi);
-        // this.sideNav.appendChild(this.addProjectBtn);
-    }
 
     displayProjectList(projectsList) {
 
@@ -322,7 +341,7 @@ export class AppView extends View {
             this.projectsUl.append(def);
         }
 
-        //create project list item nodes
+        //create project list item nodesnom
         else {
             console.log(projectsList);
             projectsList.map(project => {
@@ -330,8 +349,11 @@ export class AppView extends View {
                 projectLi.id = project.id;
 
                 const spanTitle = this.createElement('span', 'project-title-span editable');
-                spanTitle.contentEditable = true;
+                // spanTitle.contentEditable = true;
                 spanTitle.textContent = project.title;
+
+                //because event targetting was seeing span for handleObserveProjectState
+                spanTitle.id = project.id
 
                 projectLi.append(spanTitle);
 

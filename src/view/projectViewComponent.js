@@ -19,7 +19,7 @@ class ProjectView {
     }
 
     renderProjectListItem(project) {
-        const projectLi =
+
 
     }
 }
