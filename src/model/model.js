@@ -43,7 +43,7 @@ export class UserDataModel {
         }
         else {
             this._tasks.push(new Task(taskObject));
-            console.log(this._tasks[0])
+            console.log(this._tasks)
             console.log('200');
             //logic to push to project array as well 
         }

@@ -154,10 +154,10 @@ export class AppView extends View {
             name: 'title',
             type: 'text',
             placeholder: 'Task Title',
-            class: 'task-title',
+            className: 'task-title add-task-form',
             required: 1
         });
-        this.descriptionText = this.createElement('textarea', 'description-input');
+        this.descriptionText = this.createElement('textarea', 'description-input add-task-form');
         this.descriptionText.setAttribute('placeholder', 'Description...');
         this.descriptionText.setAttribute('name', 'description')
 
@@ -166,17 +166,17 @@ export class AppView extends View {
             name: 'due-date',
             type: 'date',
             placeholder: 'Task Title',
-            className: 'task-date',
+            className: 'task-date add-task-form',
             required: 1
         });
 
         this.priorityFieldset = this.createElement('fieldset');
-        this.priorityLegend = this.createElement('legend', 'priority-legend', 'Priority:');
+        this.priorityLegend = this.createElement('legend', 'priority-legend add-task-form', 'Priority:');
         this.createInput({
             key: 'priorityHigh',
             name: 'priority',
             type: 'radio',
-            className: 'task-priority',
+            className: 'task-priority add-task-form',
             id: 'high-priority',
             required: 1,
             value: 3
@@ -186,7 +186,7 @@ export class AppView extends View {
             key: 'priorityMed',
             name: 'priority',
             type: 'radio',
-            className: 'task-priority',
+            className: 'task-priority add-task-form',
             id: 'med-priority',
             value: 2
 
@@ -195,7 +195,7 @@ export class AppView extends View {
             key: 'priorityLow',
             name: 'priority',
             type: 'radio',
-            className: 'task-priority',
+            className: 'task-priority add-task-form',
             id: 'low-priority',
             value: 1
         });
@@ -252,7 +252,7 @@ export class AppView extends View {
     createInput({ key, type, placeholder, className, id, required, name, value }) {
         this[key] = this.createElement('input');
         this[key].type = type;
-        this[key].classList.add(className);
+        this[key].className = className;
         this[key].name = name;
         this[key].placeholder = placeholder;
         if (value) this[key].value = value;
@@ -284,15 +284,26 @@ export class AppView extends View {
     }
 
     _removeProjectForm() {
+        this.projectForm.reset();
         this.projectForm.removeEventListener('submit', this.projectForm.binder);
-        this.projectForm.removeEventListener('click', this.projectForm.cancel);
-        this.projectTitleInput.value = "";
+        this.cancelButton.removeEventListener('click', this.projectForm.cancel);
+        // this.projectTitleInput.value = "";
         this.projectForm.remove();
         this.sideNav.appendChild(this.addProjectBtn);
         this.raiseChange();
 
         // this.projectsUl.removeChild(this.projectFormLi);
         // this.sideNav.appendChild(this.addProjectBtn);
+    }
+
+    _removeTaskForm() {
+        this.taskForm.reset();
+        this.taskForm.removeEventListener('submit', this.taskForm.binder);
+        this.cancelTaskBtn.removeEventListener('click', this.taskForm.cancel);
+        this.taskForm.remove();
+        this.appCtr.append(this.addTaskBtn);
+        this.raiseChange();
+
     }
 
     bindAddTaskForm(handler) {
@@ -303,6 +314,11 @@ export class AppView extends View {
 
                 handler(new FormData(this.taskForm));
 
+            });
+
+            this.cancelTaskBtn.addEventListener('click', this.taskForm.cancel = e => {
+                e.preventDefault();
+                this._removeTaskForm();
             })
         }
     }
@@ -319,6 +335,7 @@ export class AppView extends View {
                     handler({ title: this.projectTitleInput.value });
 
                     //clean up successful submit
+
                     this._removeProjectForm();
                 }
 
@@ -347,11 +364,7 @@ export class AppView extends View {
     }
 
 
-
-
-
-
-
+    //listener function
     displayProjectList(projectsList) {
 
         while (this.projectsUl.firstChild) {
