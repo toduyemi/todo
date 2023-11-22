@@ -1,4 +1,6 @@
-
+import { ProjectView, projectView } from './projectViewComponent';
+import Menu from '../icons/menu-hamburger-nav-svgrepo-com.svg'
+import Check from '../icons/done-all-svgrepo-com.svg'
 export const baseAppHtml = {
     body: document.body,
     appHeader: document.createElement('header'),
@@ -50,17 +52,11 @@ export const baseAppHtml = {
             </svg>`
 
         this.appHeader.appendChild(this.appTitle);
-        this.appTitle.textContent = 'get \'er done';
+
         this.body.append(this.appHeader, this.sideNav, this.appCtr);
 
         //sideNav
-        this.homeDiv.innerHTML = `
-        <h2>Home</h2>
-        `;
 
-        this.projectsDiv.innerHTML = `
-        <h2>Projects</h2>
-        `;
 
         this.addProjectBtn.textContent = 'Add Project';
 
@@ -131,23 +127,20 @@ export class AppView extends View {
     constructor() {
         super();
         this.body = document.body;
-        this.appHeader = this.createElement('header');
-        this.appTitle = this.createElement('h1');
+
+
         this.sideNavSvgCtr = this.createElement('div');
-        this.sideNav = this.createElement('nav');
+
         this.appCtr = this.createElement('div');
-        this.appCtrUl = this.createElement('ul');
-        this.projectsDiv = this.createElement('div');
-        this.projectsUl = this.createElement('ul', 'project-list');
-        this.homeUl = this.createElement('ul');
-        this.homeDiv = this.createElement('div');
+        this.tasksUl = this.createElement('ul', 'task-list');
+
 
 
         this.displayHeader = this.createElement('h1');
 
 
         //task form elements
-        this.addTaskBtn = this.createElement('button', 'app-btn', 'Add Task');
+
         this.taskForm = this.createElement('form', 'add-task-form');
         this.createInput({
             key: 'taskTitleInput',
@@ -219,7 +212,7 @@ export class AppView extends View {
         this.addButton = this.createElement('button', 'project-btn', 'Add');
         this.cancelButton = this.createElement('button', 'project-btn', 'Cancel');
 
-
+        this.createApp();
 
         this.tempHtmlInit();
         // this.addChangeListener(this.bindAddProjectForm.bind(this));
@@ -237,8 +230,8 @@ export class AppView extends View {
     tempHtmlInit() {
 
         this.projectForm.append(this.projectTitleInput, this.addButton, this.cancelButton);
-        this.sideNav.append(this.projectsUl, this.addProjectBtn)
-        this.appCtr.append(this.appCtrUl, this.addTaskBtn)
+
+        this.appCtr.append(this.tasksUl, this.addTaskBtn)
 
         //task
         this.priorityFieldset.append(this.priorityLegend, this.priorityLow, this.priorityMed, this.priorityHigh);
@@ -269,6 +262,35 @@ export class AppView extends View {
         return element;
     }
 
+    createApp() {
+        //header
+        this.appMenuIcon = new Image();
+        this.appMenuIcon.src = Menu;
+
+        this.appCheckIcon = new Image();
+        this.appCheckIcon.src = Check;
+
+        this.appTitle = this.createElement('h1', '', 'get \'er done');
+        this.appTitleCtr = this.createElement('div', 'title-ctr');
+        this.appTitleCtr.append(this.appCheckIcon, this.appTitle)
+
+        this.appHeader = this.createElement('header');
+
+        this.appHeader.append(this.appMenuIcon, this.appTitleCtr);
+
+        //sideNav
+        this.sideNav = this.createElement('nav');
+        this.projectsDiv = this.createElement('div', '', '<h2>Projects</h2>');
+        this.projectsUl = this.createElement('ul', 'project-list');
+        this.homeUl = this.createElement('ul');
+        this.homeDiv = this.createElement('div', '', '<h2>Home</h2>');
+        this.addTaskBtn = this.createElement('button', 'app-btn', 'Add Task');
+        this.homeDiv.append(this.homeUl);
+        this.projectsDiv.append(this.projectsUl);
+        this.sideNav.append(this.homeDiv, this.projectsDiv, this.addTaskBtn);
+
+        this.body.append(this.appHeader, this.sideNav);
+    }
 
     _buildAddTaskForm() {
         this.appCtr.append(this.taskForm);
@@ -313,6 +335,7 @@ export class AppView extends View {
                 e.preventDefault();
 
                 handler(new FormData(this.taskForm));
+                this._removeTaskForm();
 
             });
 
@@ -347,7 +370,7 @@ export class AppView extends View {
             this.cancelButton.addEventListener('click', this.projectForm.cancel = e => {
                 e.preventDefault();
                 this._removeProjectForm();
-            })
+            });
         }
     }
 
@@ -378,7 +401,7 @@ export class AppView extends View {
             this.projectsUl.append(def);
         }
 
-        //create project list item nodesnom
+        //create project list item nodes
         else {
             console.log(projectsList);
             projectsList.map(project => {
@@ -398,8 +421,30 @@ export class AppView extends View {
 
             });
         }
-
     }
+
+    displayTaskList(taskList) {
+        while (this.tasksUl.firstChild) {
+            this.tasksUl.textContent = '';
+        }
+
+        if (taskList.length === 0) {
+            const def = this.createElement('p');
+            def.textContent = 'No tasks! Add new task!';
+            this.tasksUl.append(def);
+        }
+
+        else {
+            new ProjectView(taskList);
+        }
+    }
+
 
 }
 
+
+class ToDo {
+    constructor(params) {
+
+    }
+}

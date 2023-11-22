@@ -1,3 +1,22 @@
+header {
+    display: flex;
+    height: 20%;
+}
+
+.title-ctr {
+    display: flex;
+}
+
+header img {
+    width: 3%
+}
+
+
 .project-list {
     cursor: pointer;
+}
+
+.task-ctr {
+    display: flex;
+    list-style: none;
 }

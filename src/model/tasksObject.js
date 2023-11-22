@@ -15,7 +15,7 @@ export class Task {
      * @param {Date} currentDate 
      * @param {string} priority 
      * @param {string} status 
-     * @param {int} id
+     * @param {number} id
      */
     constructor(task) {
         // super();
@@ -79,7 +79,9 @@ export class Task {
     get status() {
         return this._status;
     }
-
+    get id() {
+        return this._id;
+    }
     set id(value) {
         this._id = value;
     }

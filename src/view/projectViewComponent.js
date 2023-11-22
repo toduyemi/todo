@@ -1,25 +1,15 @@
-import TaskView from './taskViewComponent';
+import { TaskView } from './taskViewComponent';
 
-class ProjectView {
-    constructor(project, projects) {
+export class ProjectView {
+    constructor(project) {
         this._project = project;
-        this._projects = [];
-    }
-
-    set projects(value) {
-
+        this.renderProjectContents();
     }
 
     renderProjectContents() {
         this._project.map(task => {
-            let taskItem = new TaskView(task);
-            taskItem.renderTask();
-
+            new TaskView(task);
         })
     }
 
-    renderProjectListItem(project) {
-
-
-    }
 }

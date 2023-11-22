@@ -2,6 +2,7 @@ import { baseAppHtml, AppView } from '../view/baseView.js';
 import { UserDataModel } from "../model/model.js";
 
 import '../../style.css';
+import 'normalize.css/'
 
 
 
@@ -16,19 +17,26 @@ class AppController {
         this.appView.addChangeListener(() => this.appView.bindAddTaskForm(this.handleAddTask.bind(this)));
 
         //refresh list sidenav project list
-        this.appView.addChangeListener(() => this.newProjectDomTrigger(this.appModel.projectsList));
+        this.appView.addChangeListener(() => this.appView.displayProjectList(this.appModel.projectsList));
+
+        //refresh task list
+        this.appView.addChangeListener(() => this.appView.displayTaskList(this.getTaskList()));
 
         //get current id clicked on
         this.appView.bindProjectList(this.handleObserveProjectState.bind(this));
 
-        //display initial project list
-        this.newProjectDomTrigger(this.appModel.projectsList);
+        //display initial app data
+        this.appView.raiseChange();
     }
 
     //'trigger' for things going to DOM
 
     newProjectDomTrigger(projectsList) {
         this.appView.displayProjectList(projectsList);
+    }
+
+    newTaskTrigger(taskList) {
+
     }
 
     //'handle' for things incoming from DOM
@@ -45,9 +53,16 @@ class AppController {
 
     //everytime a project is clicked store its index number from data index
     handleObserveProjectState(target) {
-
+        console.log(target.id)
         this.currentProjectIndex = target.id;
-        console.log(this.currentProjectIndex);
+    }
+
+    getTaskList() {
+        if (!this.currentProjectIndex) return this.appModel.tasksList;
+
+        else {
+            return this.appModel.getProject();
+        }
     }
 }
 

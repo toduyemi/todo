@@ -25,10 +25,11 @@ export class UserDataModel {
 
     //TASK CRUD METHODS
 
-    getTasks() {
+    get tasksList() {
         // let allTasks = this.projects.map(project => project.slice());
-        return this.tasks;
+        return this._tasks.slice();
     }
+
     getTask(taskId) {
         for (let i = 0; i < this.tasks.length; i++) {
             if (taskId == this.tasks[i].id) {
@@ -37,12 +38,15 @@ export class UserDataModel {
         }
 
     }
+
     addTask(taskObject) {
         if (!taskObject instanceof FormData) {
             throw new Error('401 - Not a task object');
         }
         else {
-            this._tasks.push(new Task(taskObject));
+            let newTask = new Task(taskObject);
+            newTask.id = this._tasks.length;
+            this._tasks.push(newTask);
             console.log(this._tasks)
             console.log('200');
             //logic to push to project array as well 
@@ -72,8 +76,9 @@ export class UserDataModel {
         }
     }
 
+    //use listeners for models
     setTaskIds() {
-        this.tasks.forEach(task => {
+        this._tasks.forEach(task => {
             task.setId();
         });
     }
@@ -84,13 +89,15 @@ export class UserDataModel {
         return this._projects.slice();
     }
 
-    getProject(projectId) {
-        for (let i = 0; i < this.projects.length; i++) {
-            if (projectId == this.proj[i]) {
-                return this.project[i];
+    getProject(projectState) {
+        console.log(projectState)
+        for (let i = 0; i < this._projects.length; i++) {
+            if (projectState == this._projects[i].id) {
+                return this._projects[i].slice();
             }
         }
     }
+
     addProject(projectObject) {
 
         if (!projectObject instanceof Object) {
