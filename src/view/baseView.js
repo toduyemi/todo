@@ -131,8 +131,6 @@ export class AppView extends View {
 
         this.sideNavSvgCtr = this.createElement('div');
 
-        this.appCtr = this.createElement('div');
-        this.tasksUl = this.createElement('ul', 'task-list');
 
 
 
@@ -288,6 +286,11 @@ export class AppView extends View {
         this.homeDiv.append(this.homeUl);
         this.projectsDiv.append(this.projectsUl);
         this.sideNav.append(this.homeDiv, this.projectsDiv, this.addTaskBtn);
+
+        //app or tasks
+        this.appCtr = this.createElement('div', 'app-ctr');
+        this.tasksUl = this.createElement('ul', 'task-list');
+
 
         this.body.append(this.appHeader, this.sideNav);
     }
