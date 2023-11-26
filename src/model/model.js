@@ -42,7 +42,7 @@ export class UserDataModel extends Listener {
             this.raiseChange();
 
             //logic to push to project array as well 
-            if (projectState) {
+            if (!Number.isNaN(projectState)) {
                 for (let i = 0; i < this._projects.length; i++) {
                     if (projectState === this._projects[i].id) {
                         this._projects[i].tasks = newTask;
