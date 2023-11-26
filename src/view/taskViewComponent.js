@@ -6,10 +6,11 @@ export class TaskView {
     constructor(task) {
         this._task = task;
         this.deleteIcon = new Image();
-        this.deleteIcon.src = trash;
+        this.deleteIcon.src = trash
 
         this.editIcon = new Image();
         this.editIcon.src = threeDots;
+
         this.renderTask();
         this.attachTaskIcons();
     }
@@ -38,7 +39,9 @@ export class TaskView {
     }
 
     attachTaskIcons() {
-        document.querySelector('.task-delete').append(this.deleteIcon);
-        document.querySelector('.task-edit').append(this.editIcon);
+        document.querySelector(`[data-task-id="${this._task.id}"] .task-delete`).append(this.deleteIcon);
+        document.querySelector(`[data-task-id="${this._task.id}"] .task-edit`).append(this.editIcon);
     }
+
+
 }

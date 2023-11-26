@@ -24,6 +24,7 @@ class AppController {
 
         //get current id clicked on
         this.appView.bindNavList(this.handleObserveProjectState.bind(this));
+        this.appView.bindDeleteTaskItem(this.handleDeleteTask.bind(this));
 
         //display initial app data
         this.appView.raiseChange();
@@ -51,6 +52,9 @@ class AppController {
         this.appModel.addTask(taskData, +this.currentProjectIndex);
     }
 
+    handleDeleteTask(id) {
+        this.appModel.deleteTask(id);
+    }
     //everytime a project is clicked store its index number from data index
     handleObserveProjectState(target) {
         console.log(target.id)

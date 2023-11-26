@@ -1,4 +1,5 @@
 import { ProjectView, projectView } from './projectViewComponent';
+import { Listener } from '../helper/parent-class';
 import Menu from '../icons/menu-hamburger-nav-svgrepo-com.svg'
 import Check from '../icons/done-all-svgrepo-com.svg'
 export const baseAppHtml = {
@@ -102,28 +103,9 @@ export const baseAppHtml = {
 
 
 }
-/**
- * Base class for dom view 
- */
-class View {
-    /**
-     * listeners will listen for dom changes such as project or 
-     * task form and then bind event listeners
-     */
-    constructor() {
-        this._listeners = [];
-    }
 
-    addChangeListener(handler) {
-        this._listeners.push(handler);
-    }
 
-    raiseChange() {
-        this._listeners.forEach(listener => listener());
-    }
-}
-
-export class AppView extends View {
+export class AppView extends Listener {
     constructor() {
         super();
         this.body = document.body;
@@ -362,7 +344,6 @@ export class AppView extends View {
                     handler({ title: this.projectTitleInput.value });
 
                     //clean up successful submit
-
                     this._removeProjectForm();
                 }
 
@@ -430,6 +411,16 @@ export class AppView extends View {
 
             });
         }
+    }
+
+    bindDeleteTaskItem(handler) {
+        this.tasksUl.addEventListener('click', e => {
+            if (e.target.parentElement.className === 'task-delete') {
+                const id = e.target.closest('.task-ctr').dataset.taskId;
+                handler(id);
+            }
+            this.raiseChange();
+        })
     }
 
     //listener function

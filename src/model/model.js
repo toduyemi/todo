@@ -31,9 +31,9 @@ export class UserDataModel {
     }
 
     getTask(taskId) {
-        for (let i = 0; i < this.tasks.length; i++) {
-            if (taskId == this.tasks[i].id) {
-                return this.tasks[i];
+        for (let i = 0; i < this._tasks.length; i++) {
+            if (taskId == this._tasks[i].id) {
+                return this._tasks[i];
             }
         }
 
@@ -79,10 +79,10 @@ export class UserDataModel {
     }
     deleteTask(taskId) {
         //find task in array
-        for (let i = 0; i < this.tasks.length; i++) {
-            if (taskId == this.tasks[i].id) {
+        for (let i = 0; i < this._tasks.length; i++) {
+            if (taskId == this._tasks[i].id) {
                 //replace that task info //task will lose id property etc, work out a different way
-                this.tasks.splice(i, 1);
+                this._tasks.splice(i, 1);
             }
         }
     }
