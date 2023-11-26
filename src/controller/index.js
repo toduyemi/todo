@@ -22,6 +22,8 @@ class AppController {
         //refresh task list
         this.appView.addChangeListener(() => this.appView.displayTaskList(this.getTaskList()));
 
+        this.appModel.addChangeListener(this.appModel.setTaskIds.bind(this.appModel));
+
         //get current id clicked on
         this.appView.bindNavList(this.handleObserveProjectState.bind(this));
         this.appView.bindDeleteTaskItem(this.handleDeleteTask.bind(this));

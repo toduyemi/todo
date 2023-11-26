@@ -1,24 +1,13 @@
 import { Project } from "./projectsObject";
 import { Task } from "./tasksObject";
+import { Listener } from '../helper/parent-class';
 
-export class Model {
-    constructor() {
-        this.listeners = [];
-    }
-
-    addListeners(listener) {
-        this.listeners.push(listener)
-    }
-
-    triggerListener(listener) {
-
-    }
-}
 
 
 // create an object of all appData with methods to CRUD data structure
-export class UserDataModel {
-    constructor(params) {
+export class UserDataModel extends Listener {
+    constructor() {
+        super();
         this._tasks = [];
         this._projects = [];
     }
@@ -50,7 +39,7 @@ export class UserDataModel {
             this._tasks.push(newTask);
             console.log(this._tasks)
             console.log('200');
-
+            this.raiseChange();
 
             //logic to push to project array as well 
             if (projectState) {
@@ -85,12 +74,13 @@ export class UserDataModel {
                 this._tasks.splice(i, 1);
             }
         }
+        this.raiseChange();
     }
 
     //use listeners for models
     setTaskIds() {
         this._tasks.forEach(task => {
-            task.setId();
+            task.id = this._tasks.indexOf(task)
         });
     }
 
