@@ -1,11 +1,17 @@
-// import trashSvg from './src/icons/trash-svgrepo-com.svg'
-// import dotSvg from './src/icons/dots-3-horizontal-svgrepo-com.svg';
+import trash from '../icons/trash-svgrepo-com.svg'
+import threeDots from '../icons/dots-3-horizontal-svgrepo-com.svg';
 
 export class TaskView {
 
     constructor(task) {
         this._task = task;
+        this.deleteIcon = new Image();
+        this.deleteIcon.src = trash;
+
+        this.editIcon = new Image();
+        this.editIcon.src = threeDots;
         this.renderTask();
+        this.attachTaskIcons();
     }
 
 
@@ -21,13 +27,18 @@ export class TaskView {
                 <li class="task-check" ><input type="checkbox" name="check-toggle" id=""></li>
                 <li class="task-title"></li>
                 <li class="task-deadline">${this._task.dueDate}</li>
-                <li class="task-delete">~delete image~</li>
-                <li class="task-edit">~edit image~</li>
+                <li class="task-delete"></li>
+                <li class="task-edit"></li>
             </ul>
         </li>`;
 
         taskList.innerHTML += taskTemplate;
         document.querySelector(`[data-task-id="${this._task.id}"] .task-title`).textContent = this._task.title;
 
+    }
+
+    attachTaskIcons() {
+        document.querySelector('.task-delete').append(this.deleteIcon);
+        document.querySelector('.task-edit').append(this.editIcon);
     }
 }

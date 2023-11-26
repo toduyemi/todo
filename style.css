@@ -28,3 +28,8 @@ header img {
     display: flex;
     list-style: none;
 }
+
+.task-ctr img {
+    width: 5%;
+    cursor: pointer;
+}

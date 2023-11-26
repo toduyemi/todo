@@ -235,7 +235,6 @@ export class AppView extends View {
         this.priorityFieldset.append(this.priorityLegend, this.priorityLow, this.priorityMed, this.priorityHigh);
         this.taskForm.append(this.taskTitleInput, this.descriptionText, this.taskDueDateInput, this.priorityFieldset, this.submitTaskBtn, this.cancelTaskBtn);
 
-        this.body.append(this.sideNav, this.appCtr);
 
 
     }
@@ -281,18 +280,20 @@ export class AppView extends View {
         this.projectsDiv = this.createElement('div', '', '<h2>Projects</h2>');
         this.projectsUl = this.createElement('ul', 'project-list');
         this.homeUl = this.createElement('ul');
+        this.inboxLi = this.createElement('li', '', '<h3 id="inbox">Inbox</h2>')
         this.homeDiv = this.createElement('div', '', '<h2>Home</h2>');
         this.addTaskBtn = this.createElement('button', 'app-btn', 'Add Task');
+        this.homeUl.append(this.inboxLi);
         this.homeDiv.append(this.homeUl);
         this.projectsDiv.append(this.projectsUl);
-        this.sideNav.append(this.homeDiv, this.projectsDiv, this.addTaskBtn);
+        this.sideNav.append(this.homeDiv, this.projectsDiv, this.addProjectBtn);
 
         //app or tasks
         this.appCtr = this.createElement('div', 'app-ctr');
         this.tasksUl = this.createElement('ul', 'task-list');
 
 
-        this.body.append(this.appHeader, this.sideNav);
+        this.body.append(this.appHeader, this.sideNav, this.appCtr);
     }
 
     _buildAddTaskForm() {
@@ -377,8 +378,13 @@ export class AppView extends View {
         }
     }
 
-    bindProjectList(handler) {
+    bindNavList(handler) {
         //only run if a project has been added
+
+        this.homeUl.addEventListener('click', e => {
+            //either stores data-index or outputs array; trigger and handle
+            handler(e.target);
+        })
 
         this.projectsUl.addEventListener('click', e => {
             //either stores data-index or outputs array; trigger and handle
@@ -426,6 +432,7 @@ export class AppView extends View {
         }
     }
 
+    //listener function
     displayTaskList(taskList) {
         while (this.tasksUl.firstChild) {
             this.tasksUl.textContent = '';

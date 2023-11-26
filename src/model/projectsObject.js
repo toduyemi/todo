@@ -1,4 +1,4 @@
-
+import { Task } from "./tasksObject";
 export class Project {
     constructor(project) {
         // super();
@@ -26,11 +26,8 @@ export class Project {
     set tasks(value) {
 
         //ensure input is a truthy object that is not an array
-        if (value && typeof value === 'object' && !Array.isArray(value)) {
-            this._tasks.push(value);
-        }
 
-        if (value && value instanceof Task && !Array.isArray(value)) {
+        if (value instanceof Task) {
             this._tasks.push(value);
         }
     }

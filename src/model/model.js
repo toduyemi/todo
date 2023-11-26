@@ -39,17 +39,28 @@ export class UserDataModel {
 
     }
 
-    addTask(taskObject) {
+    addTask(taskObject, projectState) {
         if (!taskObject instanceof FormData) {
             throw new Error('401 - Not a task object');
         }
+
         else {
             let newTask = new Task(taskObject);
             newTask.id = this._tasks.length;
             this._tasks.push(newTask);
             console.log(this._tasks)
             console.log('200');
+
+
             //logic to push to project array as well 
+            if (projectState) {
+                for (let i = 0; i < this._projects.length; i++) {
+                    if (projectState === this._projects[i].id) {
+                        this._projects[i].tasks = newTask;
+                        console.log(this._projects[i]);
+                    }
+                }
+            }
         }
     }
 
@@ -93,7 +104,7 @@ export class UserDataModel {
         console.log(projectState)
         for (let i = 0; i < this._projects.length; i++) {
             if (projectState == this._projects[i].id) {
-                return this._projects[i].slice();
+                return this._projects[i].tasks.slice();
             }
         }
     }
