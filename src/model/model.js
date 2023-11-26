@@ -74,6 +74,15 @@ export class UserDataModel extends Listener {
                 this._tasks.splice(i, 1);
             }
         }
+        //find same task in relevant project
+        for (let i = 0; i < this._projects.length; i++) {
+            for (let j = 0; j < this._projects[i]._tasks.length; j++) {
+                if (taskId == this._projects[i]._tasks[j].id) {
+                    //replace that task info //task will lose id property etc, work out a different way
+                    this._projects[i]._tasks.splice(j, 1);
+                }
+            }
+        }
         this.raiseChange();
     }
 
