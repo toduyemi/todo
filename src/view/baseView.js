@@ -180,6 +180,7 @@ export class AppView extends Listener {
     }
 
     _buildAddTaskForm() {
+        this.taskForm.className = 'add-task-form';
         this.appCtr.append(this.taskForm);
         this.addTaskBtn.remove();
         this.raiseChange();
@@ -195,6 +196,7 @@ export class AppView extends Listener {
     _buildEditProjectForm(e) {
 
         if (e.target.parentElement.className === 'task-edit') {
+            this.taskForm.className = 'edit-task-form';
             e.target.closest('.task-ctr').replaceChildren(this.taskForm);
         }
 
@@ -336,18 +338,21 @@ export class AppView extends Listener {
 
     //listener function
     displayTaskList(taskList) {
-        while (this.tasksUl.firstChild) {
-            this.tasksUl.textContent = '';
-        }
+        //to prevent this function from replacing the edit-form while listener functions are being called to bind edit-form
+        if (!document.querySelector('.edit-task-form')) {
+            while (this.tasksUl.firstChild) {
+                this.tasksUl.textContent = '';
+            }
 
-        if (taskList.length === 0) {
-            const def = this.createElement('p');
-            def.textContent = 'No tasks! Add new task!';
-            this.tasksUl.append(def);
-        }
+            if (taskList.length === 0) {
+                const def = this.createElement('p');
+                def.textContent = 'No tasks! Add new task!';
+                this.tasksUl.append(def);
+            }
 
-        else {
-            new ProjectView(taskList);
+            else {
+                new ProjectView(taskList);
+            }
         }
     }
 
