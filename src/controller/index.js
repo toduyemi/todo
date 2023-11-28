@@ -23,6 +23,7 @@ class AppController {
         this.appView.addChangeListener(() => this.appView.displayTaskList(this.getTaskList()));
 
         this.appModel.addChangeListener(this.appModel.setTaskIds.bind(this.appModel));
+        this.appModel.addChangeListener(this.appModel.setProjectIds.bind(this.appModel));
 
         //get current id clicked on
         this.appView.bindNavList(this.handleObserveProjectState.bind(this));

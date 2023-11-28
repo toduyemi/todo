@@ -18,6 +18,9 @@ export class Project {
     get id() {
         return this._id;
     }
+    set id(value) {
+        this._id = value;
+    }
 
     get tasks() {
         return this._tasks.slice();

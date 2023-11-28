@@ -72,7 +72,7 @@ export class AppView extends Listener {
             value: 1
         });
 
-        this.submitTaskBtn = this.createElement('button', 'task-btn', 'Add');
+        this.submitTaskBtn = this.createElement('button', 'task-btn', 'Submit');
         this.cancelTaskBtn = this.createElement('button', 'task-btn', 'Cancel');
 
         //project form elements

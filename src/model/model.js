@@ -117,10 +117,9 @@ export class UserDataModel extends Listener {
 
         else {
             this._projects.push(new Project({ title: projectObject.title, id: this._projects.length }));
-
-            console.log(this._projects)
-            console.log('200');
         }
+
+        this.raiseChange();
 
     }
     editProject(projectId, projectUpdate) {
@@ -137,7 +136,9 @@ export class UserDataModel extends Listener {
 
     }
     setProjectIds() {
-
+        this._projects.forEach(project => {
+            project.id = this._projects.indexOf(project)
+        });
     }
 
 }
