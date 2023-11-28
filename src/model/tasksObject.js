@@ -24,7 +24,7 @@ export class Task {
         this._description = task.get('description');
         this._dueDate = task.get('due-date');
         this._datePosted = new Date();
-        this._priority = task.get('priority');
+        this._priority = +task.get('priority');
         this._status = false;
         this._id;
     }

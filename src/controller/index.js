@@ -11,11 +11,13 @@ class AppController {
         this.appView = new AppView();
         this.appModel = new UserDataModel();
         this.currentProjectIndex = 'inbox';
+        this.currentTaskIndex;
 
         //add DOM event listeners to bind event listener to forms
         this.appView.addChangeListener(() => this.appView.bindAddProjectForm(this.handleAddProject.bind(this)));
         this.appView.addChangeListener(() => this.appView.bindAddTaskForm(this.handleAddTask.bind(this)));
-        this.appView.addChangeListener(() => this.appView.bindEditTaskForm(this.handleEditTask.bind(this)));
+        this.appView.addChangeListener(() => this.appView.bindEditTaskForm(this.handleEditTask.bind(this), this.handleObserveTaskState.bind(this)));
+        this.appView.addChangeListener(() => this.appView.prefillEditTaskForm(this.handleGetTask(this.currentTaskIndex)))
         //refresh list sidenav project list
         this.appView.addChangeListener(() => this.appView.displayProjectList(this.appModel.projectsList));
 
@@ -34,7 +36,6 @@ class AppController {
     }
 
     //'trigger' for things going to DOM
-
     newProjectDomTrigger(projectsList) {
         this.appView.displayProjectList(projectsList);
     }
@@ -44,7 +45,9 @@ class AppController {
     }
 
     //'handle' for things incoming from DOM
-
+    handleGetTask(id) {
+        return this.appModel.getTask(id);
+    }
     handleAddProject(projectTitle) {
         console.log(projectTitle)
         this.appModel.addProject(projectTitle);
@@ -66,6 +69,10 @@ class AppController {
     handleObserveProjectState(target) {
         this.currentProjectIndex = target.id;
         this.appView.raiseChange();
+    }
+
+    handleObserveTaskState(id) {
+        this.currentTaskIndex = id;
     }
 
     getTaskList() {

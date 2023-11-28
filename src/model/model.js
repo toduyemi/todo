@@ -62,7 +62,8 @@ export class UserDataModel extends Listener {
                 this._tasks[i].title = taskUpdate.get('title');
                 this._tasks[i].description = taskUpdate.get('description');
                 this._tasks[i].dueDate = taskUpdate.get('due-date');
-                this._tasks[i].priority = taskUpdate.get('priority');
+                this._tasks[i].priority = +taskUpdate.get('priority');
+                console.log(this._tasks[i]);
             }
         }
 

@@ -37,7 +37,6 @@ export class AppView extends Listener {
             key: 'taskDueDateInput',
             name: 'due-date',
             type: 'date',
-            placeholder: 'Task Title',
             className: 'task-date',
             required: 1
         });
@@ -226,6 +225,16 @@ export class AppView extends Listener {
 
     }
 
+    prefillEditTaskForm(task) {
+        if (document.querySelector('.edit-task-form')) {
+            this.taskForm.title.value = task.title;
+            this.taskForm.description.value = task.description;
+            console.log(this.taskForm.elements)
+            this.taskForm['due-date'].value = task.dueDate;
+            document.querySelector(`fieldset [value="${task.priority}"]`).checked = true;
+        }
+    }
+
     bindAddTaskForm(handler) {
         if (document.querySelector('.add-task-form')) {
 
@@ -271,7 +280,8 @@ export class AppView extends Listener {
         }
     }
 
-    bindEditTaskForm(handler) {
+    bindEditTaskForm(handler, handler2) {
+
         if (document.querySelector('.edit-task-form')) {
 
             this.taskForm.addEventListener('submit', this.taskForm.binder = e => {
@@ -286,6 +296,9 @@ export class AppView extends Listener {
                 e.preventDefault();
                 this._removeTaskForm();
             })
+            //store id to retrieve info of task of interest 
+            // having this shoved in here is givingme very spaghetti vibes, id like to implement somethign a bit more clean
+            handler2(this.taskForm.closest('.task-ctr').dataset.taskId);
         }
     };
 
