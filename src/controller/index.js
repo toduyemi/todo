@@ -15,7 +15,7 @@ class AppController {
         //add DOM event listeners to bind event listener to forms
         this.appView.addChangeListener(() => this.appView.bindAddProjectForm(this.handleAddProject.bind(this)));
         this.appView.addChangeListener(() => this.appView.bindAddTaskForm(this.handleAddTask.bind(this)));
-
+        this.appView.addChangeListener(() => this.appView.bindEditTaskForm(this.handleEditTask.bind(this)));
         //refresh list sidenav project list
         this.appView.addChangeListener(() => this.appView.displayProjectList(this.appModel.projectsList));
 
@@ -57,9 +57,12 @@ class AppController {
     handleDeleteTask(id) {
         this.appModel.deleteTask(id);
     }
+
+    handleEditTask(taskData, id) {
+        this.appModel.editTask(taskData, id);
+    }
     //everytime a project is clicked store its index number from data index
     handleObserveProjectState(target) {
-        console.log(target.id)
         this.currentProjectIndex = target.id;
         this.appView.raiseChange();
     }

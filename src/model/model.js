@@ -54,14 +54,15 @@ export class UserDataModel extends Listener {
     }
 
 
-    editTask(taskId, taskUpdate) {
+    editTask(taskUpdate, taskId) {
         //find task in array
-
-
-        for (let i = 0; i < this.tasks.length; i++) {
-            if (taskId == this.tasks[i].id) {
+        for (let i = 0; i < this._tasks.length; i++) {
+            if (taskId == this._tasks[i].id) {
                 //replace that task info //task will lose id property etc, work out a different way
-                this.tasks[i] = taskUpdate;
+                this._tasks[i].title = taskUpdate.get('title');
+                this._tasks[i].description = taskUpdate.get('description');
+                this._tasks[i].dueDate = taskUpdate.get('due-date');
+                this._tasks[i].priority = taskUpdate.get('priority');
             }
         }
 

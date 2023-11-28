@@ -6,7 +6,7 @@ export class Task {
     2 => Needs to be done but not urgent;
     3 => Urgent and deadline imminent */
 
-    priorities = [1, 2, 3];
+
     /**
      * task argument is a FormData object
      * @param {string} title 
@@ -19,6 +19,7 @@ export class Task {
      */
     constructor(task) {
         // super();
+        this.priorities = [1, 2, 3];
         this._title = task.get('title');
         this._description = task.get('description');
         this._dueDate = task.get('due-date');
@@ -62,16 +63,12 @@ export class Task {
         return this._datePosted;
     }
 
-    //read only should not be able to change
-    // set datePosted(value) { 
-    //     this.datePosted = value;
-    // }
     get priority() {
         return this._priority;
     }
 
     set priority(value) {
-        if (priorities.includes(value)) {
+        if (this.priorities.includes(value)) {
             this._priority = value;
         }
     }

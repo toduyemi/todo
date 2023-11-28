@@ -26,10 +26,10 @@ export class AppView extends Listener {
             name: 'title',
             type: 'text',
             placeholder: 'Task Title',
-            className: 'task-title add-task-form',
+            className: 'task-title',
             required: 1
         });
-        this.descriptionText = this.createElement('textarea', 'description-input add-task-form');
+        this.descriptionText = this.createElement('textarea', 'description-input');
         this.descriptionText.setAttribute('placeholder', 'Description...');
         this.descriptionText.setAttribute('name', 'description')
 
@@ -38,17 +38,17 @@ export class AppView extends Listener {
             name: 'due-date',
             type: 'date',
             placeholder: 'Task Title',
-            className: 'task-date add-task-form',
+            className: 'task-date',
             required: 1
         });
 
         this.priorityFieldset = this.createElement('fieldset');
-        this.priorityLegend = this.createElement('legend', 'priority-legend add-task-form', 'Priority:');
+        this.priorityLegend = this.createElement('legend', 'priority-legend', 'Priority:');
         this.createInput({
             key: 'priorityHigh',
             name: 'priority',
             type: 'radio',
-            className: 'task-priority add-task-form',
+            className: 'task-priority',
             id: 'high-priority',
             required: 1,
             value: 3
@@ -58,7 +58,7 @@ export class AppView extends Listener {
             key: 'priorityMed',
             name: 'priority',
             type: 'radio',
-            className: 'task-priority add-task-form',
+            className: 'task-priority',
             id: 'med-priority',
             value: 2
 
@@ -67,7 +67,7 @@ export class AppView extends Listener {
             key: 'priorityLow',
             name: 'priority',
             type: 'radio',
-            className: 'task-priority add-task-form',
+            className: 'task-priority',
             id: 'low-priority',
             value: 1
         });
@@ -198,6 +198,7 @@ export class AppView extends Listener {
         if (e.target.parentElement.className === 'task-edit') {
             this.taskForm.className = 'edit-task-form';
             e.target.closest('.task-ctr').replaceChildren(this.taskForm);
+            this.raiseChange();
         }
 
     }
@@ -269,6 +270,26 @@ export class AppView extends Listener {
             });
         }
     }
+
+    bindEditTaskForm(handler) {
+        if (document.querySelector('.edit-task-form')) {
+
+            this.taskForm.addEventListener('submit', this.taskForm.binder = e => {
+                e.preventDefault();
+                let taskId = e.target.closest('.task-ctr').dataset.taskId;
+                handler(new FormData(this.taskForm), taskId);
+                this._removeTaskForm();
+
+            });
+
+            this.cancelTaskBtn.addEventListener('click', this.taskForm.cancel = e => {
+                e.preventDefault();
+                this._removeTaskForm();
+            })
+        }
+    };
+
+
 
     bindNavList(handler) {
         //only run if a project has been added
