@@ -1,4 +1,4 @@
-import { baseAppHtml, AppView } from '../view/baseView.js';
+import { AppView } from '../view/baseView.js';
 import { UserDataModel } from "../model/model.js";
 
 import '../../style.css';
@@ -22,7 +22,7 @@ class AppController {
         this.appView.addChangeListener(() => this.appView.displayProjectList(this.appModel.projectsList));
 
         //refresh task list
-        this.appView.addChangeListener(() => this.appView.displayTaskList(this.getTaskList()));
+        this.appView.addChangeListener(() => this.appView.displayTaskList(this.getTaskListTrigger(), this.getPageTitleTrigger()));
 
         this.appModel.addChangeListener(this.appModel.setTaskIds.bind(this.appModel));
         this.appModel.addChangeListener(this.appModel.setProjectIds.bind(this.appModel));
@@ -30,6 +30,7 @@ class AppController {
         //get current id clicked on
         this.appView.bindNavList(this.handleObserveProjectState.bind(this));
         this.appView.bindDeleteTaskItem(this.handleDeleteTask.bind(this));
+        this.appView.bindTaskToggle(this.handleTaskCheckToggle.bind(this));
 
         //display initial app data
         this.appView.raiseChange();
@@ -40,8 +41,21 @@ class AppController {
         this.appView.displayProjectList(projectsList);
     }
 
-    newTaskTrigger(taskList) {
+    getPageTitleTrigger() {
+        if (this.currentProjectIndex === 'inbox') return 'Inbox';
 
+        else {
+            ;
+            return this.appModel.getProject(this.currentProjectIndex)._title;
+        }
+    }
+
+    getTaskListTrigger() {
+        if (this.currentProjectIndex === 'inbox') return this.appModel.tasksList;
+
+        else {
+            return this.appModel.getProjectTasks(this.currentProjectIndex);
+        }
     }
 
     //'handle' for things incoming from DOM
@@ -75,13 +89,11 @@ class AppController {
         this.currentTaskIndex = id;
     }
 
-    getTaskList() {
-        if (this.currentProjectIndex === 'inbox') return this.appModel.tasksList;
-
-        else {
-            return this.appModel.getProject(this.currentProjectIndex);
-        }
+    handleTaskCheckToggle(id) {
+        this.appModel.toggleTaskStatus(id);
     }
+
+
 }
 
 const startApp = new AppController(/* new AppView, new UserDataModel */);

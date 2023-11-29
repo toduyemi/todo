@@ -13,11 +13,6 @@ export class AppView extends Listener {
         this.sideNavSvgCtr = this.createElement('div');
 
 
-
-
-        this.displayHeader = this.createElement('h1');
-
-
         //task form elements
 
         this.taskForm = this.createElement('form', 'add-task-form');
@@ -110,11 +105,7 @@ export class AppView extends Listener {
 
 
 
-        this.appCtr.append(this.tasksUl, this.addTaskBtn)
 
-        //task
-        this.priorityFieldset.append(this.priorityLegend, this.priorityLow, this.priorityMed, this.priorityHigh);
-        this.taskForm.append(this.taskTitleInput, this.descriptionText, this.taskDueDateInput, this.priorityFieldset, this.submitTaskBtn, this.cancelTaskBtn);
 
 
 
@@ -172,8 +163,13 @@ export class AppView extends Listener {
 
         //app or tasks
         this.appCtr = this.createElement('div', 'app-ctr');
+        this.displayHeader = this.createElement('h2', 'project-title', 'Inbox')
         this.tasksUl = this.createElement('ul', 'task-list');
+        this.appCtr.append(this.displayHeader, this.tasksUl, this.addTaskBtn)
 
+        //task
+        this.priorityFieldset.append(this.priorityLegend, this.priorityLow, this.priorityMed, this.priorityHigh);
+        this.taskForm.append(this.taskTitleInput, this.descriptionText, this.taskDueDateInput, this.priorityFieldset, this.submitTaskBtn, this.cancelTaskBtn);
 
         this.body.append(this.appHeader, this.sideNav, this.appCtr);
     }
@@ -304,6 +300,7 @@ export class AppView extends Listener {
 
 
 
+
     bindNavList(handler) {
         //only run if a project has been added
 
@@ -332,6 +329,21 @@ export class AppView extends Listener {
         })
     }
 
+    bindTaskToggle(handler) {
+        this.tasksUl.addEventListener('click', e => {
+            if (e.target.parentElement.className === 'task-check') {
+                const id = e.target.closest('.task-ctr').dataset.taskId
+                handler(id);
+            }
+        })
+    }
+
+    bindEditProjectTitle(handler) {
+        this.displayHeader.addEventListener('input', () => {
+            let newTitle = this.displayHeader.textContent;
+            handler(newTitle);
+        })
+    }
 
     //listener function
     displayProjectList(projectsList) {
@@ -371,7 +383,7 @@ export class AppView extends Listener {
 
 
     //listener function
-    displayTaskList(taskList) {
+    displayTaskList(taskList, projectTitle) {
         //to prevent this function from replacing the edit-form while listener functions are being called to bind edit-form
         if (!document.querySelector('.edit-task-form')) {
             while (this.tasksUl.firstChild) {
@@ -387,6 +399,15 @@ export class AppView extends Listener {
             else {
                 new ProjectView(taskList);
             }
+            //display title of page
+            if (projectTitle !== 'Inbox') {
+                this.displayHeader.contentEditable = true;
+            }
+
+            else {
+                this.displayHeader.contentEditable = false;
+            }
+            this.displayHeader.textContent = projectTitle;
         }
     }
 

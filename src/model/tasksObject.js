@@ -84,7 +84,8 @@ export class Task {
     }
 
     toggleStatus() {
-        this.status = !this.status;
+        this._status = !this._status;
+        console.log(this._status);
     }
 
 

@@ -88,6 +88,14 @@ export class UserDataModel extends Listener {
         this.raiseChange();
     }
 
+    toggleTaskStatus(taskId) {
+        for (let i = 0; i < this._tasks.length; i++) {
+            if (taskId == this._tasks[i].id) {
+                this._tasks[i].toggleStatus();
+            }
+        }
+    }
+
     //use listeners for models
     setTaskIds() {
         this._tasks.forEach(task => {
@@ -101,11 +109,19 @@ export class UserDataModel extends Listener {
         return this._projects.slice();
     }
 
-    getProject(projectState) {
+    getProjectTasks(projectState) {
         console.log(projectState)
         for (let i = 0; i < this._projects.length; i++) {
             if (projectState == this._projects[i].id) {
                 return this._projects[i].tasks.slice();
+            }
+        }
+    }
+
+    getProject(projectState) {
+        for (let i = 0; i < this._projects.length; i++) {
+            if (projectState == this._projects[i].id) {
+                return { ...this._projects[i] }
             }
         }
     }
