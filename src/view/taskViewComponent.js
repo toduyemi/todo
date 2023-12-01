@@ -6,7 +6,7 @@ export class TaskView {
     constructor(task) {
         this._task = task;
         this.deleteIcon = new Image();
-        this.deleteIcon.src = trash
+        this.deleteIcon.src = trash;
 
         this.editIcon = new Image();
         this.editIcon.src = threeDots;
@@ -31,6 +31,9 @@ export class TaskView {
                 <li class="task-delete"></li>
                 <li class="task-edit"></li>
             </ul>
+            <div class="task-description">
+                <p>${this._task.description ? this._description : ""}</p>
+            </div>
         </li>`;
 
         taskList.innerHTML += taskTemplate;

@@ -8,11 +8,17 @@ import { Listener } from '../helper/parent-class';
 export class UserDataModel extends Listener {
     constructor() {
         super();
-        this._tasks = [];
-        this._projects = [];
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        this._tasks = tasks.map(task => new Task(task));
+        const projects = JSON.parse(localStorage.getItem('projects')) || [];
+        this._projects = projects.map(project => new Project(project));
     }
 
     //TASK CRUD METHODS
+    commit() {
+        localStorage.setItem('tasks', JSON.stringify(this._tasks));
+        localStorage.setItem('projects', JSON.stringify(this._projects));
+    }
 
     get tasksList() {
         // let allTasks = this.projects.map(project => project.slice());
@@ -37,19 +43,16 @@ export class UserDataModel extends Listener {
             let newTask = new Task(taskObject);
             newTask.id = this._tasks.length;
             this._tasks.push(newTask);
-            console.log(this._tasks)
-            console.log('200');
-            this.raiseChange();
 
             //logic to push to project array as well 
             if (!Number.isNaN(projectState)) {
                 for (let i = 0; i < this._projects.length; i++) {
                     if (projectState === this._projects[i].id) {
                         this._projects[i].tasks = newTask;
-                        console.log(this._projects[i]);
                     }
                 }
             }
+            this.raiseChange();
         }
     }
 
@@ -63,10 +66,9 @@ export class UserDataModel extends Listener {
                 this._tasks[i].description = taskUpdate.get('description');
                 this._tasks[i].dueDate = taskUpdate.get('due-date');
                 this._tasks[i].priority = +taskUpdate.get('priority');
-                console.log(this._tasks[i]);
             }
         }
-
+        this.raiseChange();
     }
     deleteTask(taskId) {
         //find task in array
@@ -94,6 +96,7 @@ export class UserDataModel extends Listener {
                 this._tasks[i].toggleStatus();
             }
         }
+        this.raiseChange();
     }
 
     //use listeners for models
@@ -135,27 +138,34 @@ export class UserDataModel extends Listener {
         else {
             this._projects.push(new Project({ title: projectObject.title, id: this._projects.length }));
         }
-
         this.raiseChange();
-
     }
+
     editProject(projectId, projectUpdate) {
-        for (let i = 0; i < this.projects.length; i++) {
-            if (projectId == this.project[i].id) {
+        for (let i = 0; i < this._projects.length; i++) {
+            if (projectId == this._projects[i].id) {
                 //replace that task info //task will lose id property etc, work out a different way
-                this.project[i] = projectUpdate;
+                this._projects[i].title = projectUpdate;
             }
-
         }
-
+        this.raiseChange();
     }
-    deleteProject() {
 
+    deleteProject(projectId) {
+        for (let i = 0; i < this._projects.length; i++) {
+            if (projectId == this._projects[i].id) {
+                this._projects.splice(i, 1);
+            }
+        }
+        this.raiseChange();
     }
+
     setProjectIds() {
         this._projects.forEach(project => {
             project.id = this._projects.indexOf(project)
         });
     }
+
+
 
 }

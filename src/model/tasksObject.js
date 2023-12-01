@@ -20,13 +20,26 @@ export class Task {
     constructor(task) {
         // super();
         this.priorities = [1, 2, 3];
-        this._title = task.get('title');
-        this._description = task.get('description');
-        this._dueDate = task.get('due-date');
-        this._datePosted = new Date();
-        this._priority = +task.get('priority');
-        this._status = false;
-        this._id;
+        if (task instanceof FormData) {
+
+            this._title = task.get('title');
+            this._description = task.get('description');
+            this._dueDate = task.get('due-date');
+            this._datePosted = new Date();
+            this._priority = +task.get('priority');
+            this._status = false;
+            this._id;
+        }
+
+        else {
+            this._title = task._title;
+            this._description = task._desscription;
+            this._dueDate = task._dueDate;
+            this._datePosted = task._datePosted;
+            this._priority = task._priority;
+            this._status = task._status;
+            this._id;
+        }
     }
 
     get title() {

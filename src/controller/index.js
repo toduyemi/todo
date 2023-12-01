@@ -18,6 +18,7 @@ class AppController {
         this.appView.addChangeListener(() => this.appView.bindAddTaskForm(this.handleAddTask.bind(this)));
         this.appView.addChangeListener(() => this.appView.bindEditTaskForm(this.handleEditTask.bind(this), this.handleObserveTaskState.bind(this)));
         this.appView.addChangeListener(() => this.appView.prefillEditTaskForm(this.handleGetTask(this.currentTaskIndex)))
+
         //refresh list sidenav project list
         this.appView.addChangeListener(() => this.appView.displayProjectList(this.appModel.projectsList));
 
@@ -26,14 +27,20 @@ class AppController {
 
         this.appModel.addChangeListener(this.appModel.setTaskIds.bind(this.appModel));
         this.appModel.addChangeListener(this.appModel.setProjectIds.bind(this.appModel));
+        this.appModel.addChangeListener(this.appModel.commit.bind(this.appModel));
 
         //get current id clicked on
         this.appView.bindNavList(this.handleObserveProjectState.bind(this));
+
         this.appView.bindDeleteTaskItem(this.handleDeleteTask.bind(this));
         this.appView.bindTaskToggle(this.handleTaskCheckToggle.bind(this));
+        this.appView.bindEditProjectTitle(this.handleEditProject.bind(this));
+        this.appView.bindDeleteProject(this.handleDeleteProject.bind(this));
 
         //display initial app data
+        this.appModel.raiseChange();
         this.appView.raiseChange();
+
     }
 
     //'trigger' for things going to DOM
@@ -59,16 +66,23 @@ class AppController {
     }
 
     //'handle' for things incoming from DOM
-    handleGetTask(id) {
-        return this.appModel.getTask(id);
-    }
+
     handleAddProject(projectTitle) {
         console.log(projectTitle)
         this.appModel.addProject(projectTitle);
     }
 
+    handleEditProject(projectTitle) {
+        this.appModel.editProject(this.currentProjectIndex, projectTitle)
+    }
+
+    handleDeleteProject(projectId) {
+        this.appModel.deleteProject(projectId);
+    }
+    handleGetTask(id) {
+        return this.appModel.getTask(id);
+    }
     handleAddTask(taskData) {
-        console.log(taskData);
         this.appModel.addTask(taskData, +this.currentProjectIndex);
     }
 
@@ -79,9 +93,16 @@ class AppController {
     handleEditTask(taskData, id) {
         this.appModel.editTask(taskData, id);
     }
+
     //everytime a project is clicked store its index number from data index
     handleObserveProjectState(target) {
         this.currentProjectIndex = target.id;
+
+        //to have page automatically revert to inbox after project is deleted
+        //isNaN condition is to prevent valueof 0 from being caught in decision flow
+        if (!this.currentProjectIndex && !Number.isNaN(this.currentProjectIndex)) {
+            this.currentProjectIndex = 'inbox'
+        }
         this.appView.raiseChange();
     }
 

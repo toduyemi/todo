@@ -2,9 +2,9 @@ import { Task } from "./tasksObject";
 export class Project {
     constructor(project) {
         // super();
-        this._title = project.title;
-        this._id = project.id;
-        this._tasks = [];
+        this._title = project._title || project.title;
+        this._id;
+        this._tasks = typeof project._tasks !== 'undefined' ? project._tasks.map(task => new Task(task)) : [];
     }
 
     get title() {

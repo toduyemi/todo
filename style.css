@@ -24,12 +24,50 @@ header img {
     cursor: pointer;
 }
 
-.task-ctr {
-    display: flex;
-    list-style: none;
+.project-list img {
+    width: 10%;
+    cursor: pointer;
 }
 
+.task-list {
+    width: 75vw;
+    list-style: none;
+    padding: 0;
+}
+
+.task-ctr {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    cursor: pointer;
+    padding: 0;
+    border-left: 10px white solid;
+}
+
+.task-ctr:hover {
+    border-left-color: black;
+}
+
+.task-ctr li {
+
+    flex: 0 1 0;
+}
+
+.task-description {
+    overflow: hidden;
+    height: 0;
+    padding: 0 1em 0 3.3em;
+}
+
+.task-description-open {
+    padding: 1em 1em 2em 3.3em;
+    height: initial;
+}
+
+
 .task-ctr img {
-    width: 5%;
+    width: 4rem;
     cursor: pointer;
 }
