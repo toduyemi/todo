@@ -12,9 +12,6 @@ export class AppView extends Listener {
         this.body = document.body;
 
 
-        this.sideNavSvgCtr = this.createElement('div');
-
-
         //task form elements
 
         this.taskForm = this.createElement('form', 'add-task-form');
@@ -26,6 +23,7 @@ export class AppView extends Listener {
             className: 'task-title',
             required: 1
         });
+        this.taskTitleInput.maxLength = '100';
         this.descriptionText = this.createElement('textarea', 'description-input');
         this.descriptionText.setAttribute('placeholder', 'Description...');
         this.descriptionText.setAttribute('name', 'description')
@@ -87,6 +85,7 @@ export class AppView extends Listener {
         this.addButton = this.createElement('button', 'project-btn', 'Add');
         this.cancelButton = this.createElement('button', 'project-btn', 'Cancel');
 
+        this.sideNavCollapse = false;
         this.createApp();
         this.bindEvents();
 
@@ -97,7 +96,10 @@ export class AppView extends Listener {
         this.addTaskBtn.addEventListener('click', this._buildAddTaskForm.bind(this));
         this.tasksUl.addEventListener('click', e => this._buildEditProjectForm(e));
         this.tasksUl.addEventListener('click', e => this._expandTask(e));
-
+        this.appMenuIcon.addEventListener('click', () => {
+            this.sideNavCollapse ? this.openNav() : this.closeNav();
+            this.sideNavCollapse = !this.sideNavCollapse;
+        });
     }
 
     createInput({ key, type, placeholder, className, id, required, name, value }) {
@@ -130,7 +132,7 @@ export class AppView extends Listener {
 
         this.appTitle = this.createElement('h1', '', 'get \'er done');
         this.appTitleCtr = this.createElement('div', 'title-ctr');
-        this.appTitleCtr.append(this.appCheckIcon, this.appTitle)
+        this.appTitleCtr.append(this.appTitle, this.appCheckIcon,)
 
         this.appHeader = this.createElement('header');
 
@@ -142,7 +144,7 @@ export class AppView extends Listener {
         this.projectsUl = this.createElement('ul', 'project-list');
         this.homeUl = this.createElement('ul');
         this.inboxLi = this.createElement('li', '', '<h3 id="inbox">Inbox</h2>')
-        this.homeDiv = this.createElement('div', '', '<h2>Home</h2>');
+        this.homeDiv = this.createElement('div', 'home-div', '<h2>Home</h2>');
         this.addTaskBtn = this.createElement('button', 'app-btn', 'Add Task');
         this.homeUl.append(this.inboxLi);
         this.homeDiv.append(this.homeUl);
@@ -423,11 +425,14 @@ export class AppView extends Listener {
     }
 
 
-}
-
-
-class ToDo {
-    constructor(params) {
-
+    openNav() {
+        this.body.style.gridTemplateColumns = '1fr 4.5fr';
+        // this.sideNav.style.width = "250"
     }
+
+    closeNav() {
+        this.body.style.gridTemplateColumns = '0 1fr'
+    }
+
+
 }

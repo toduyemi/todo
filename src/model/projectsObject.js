@@ -27,7 +27,6 @@ export class Project {
     }
 
     set tasks(value) {
-
         //ensure input is a truthy object that is not an array
 
         if (value instanceof Task) {
