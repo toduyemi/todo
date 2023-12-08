@@ -17,6 +17,7 @@ export class UserDataModel extends Listener {
     //TASK CRUD METHODS
     commit() {
         localStorage.setItem('tasks', JSON.stringify(this._tasks));
+        console.log(this._projects);
         localStorage.setItem('projects', JSON.stringify(this._projects));
     }
 

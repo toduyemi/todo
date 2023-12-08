@@ -426,12 +426,15 @@ export class AppView extends Listener {
 
 
     openNav() {
-        this.body.style.gridTemplateColumns = '1fr 4.5fr';
-        // this.sideNav.style.width = "250"
+        this.sideNav.classList.remove('close-nav');
+        this.body.classList.remove('close-nav-body');
+        this.appCtr.classList.remove('close-nav-app-ctr');
     }
 
     closeNav() {
-        this.body.style.gridTemplateColumns = '0 1fr'
+        this.sideNav.classList.add('close-nav');
+        this.body.classList.add('close-nav-body');
+        this.appCtr.classList.add('close-nav-app-ctr');
     }
 
 

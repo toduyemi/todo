@@ -53,11 +53,19 @@ nav,
     margin-bottom: 1.5em;
 
     padding: 0px 1em;
-    transition: 3s;
+    transition: 6s;
 }
 
-nav {
-    overflow-x: hidden;
+.close-nav-body {
+    grid-template-columns: 1fr;
+}
+
+.close-nav {
+    display: none;
+}
+
+.close-nav-app-ctr {
+    grid-area: 2/1/3/3;
 }
 
 .project-list {

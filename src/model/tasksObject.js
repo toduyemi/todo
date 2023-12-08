@@ -38,7 +38,7 @@ export class Task {
             this._datePosted = task._datePosted;
             this._priority = task._priority;
             this._status = task._status;
-            this._id;
+            this._id = task._id;
         }
     }
 
