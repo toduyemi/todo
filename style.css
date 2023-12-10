@@ -28,6 +28,10 @@ header {
     margin-top: 1.5em;
 }
 
+ul {
+    list-style: none;
+}
+
 .title-ctr {
     display: flex;
     align-items: center;
@@ -79,7 +83,6 @@ nav,
 
 .task-list {
     width: 75vw;
-    list-style: none;
     padding: 0;
 }
 
@@ -88,7 +91,6 @@ nav,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    list-style: none;
     cursor: pointer;
     padding: 0;
     border-left: 10px white solid;

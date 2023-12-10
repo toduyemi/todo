@@ -17,7 +17,6 @@ export class UserDataModel extends Listener {
     //TASK CRUD METHODS
     commit() {
         localStorage.setItem('tasks', JSON.stringify(this._tasks));
-        console.log(this._projects);
         localStorage.setItem('projects', JSON.stringify(this._projects));
     }
 
@@ -42,7 +41,6 @@ export class UserDataModel extends Listener {
 
         else {
             let newTask = new Task(taskObject);
-            newTask.id = this._tasks.length;
             this._tasks.push(newTask);
 
             //logic to push to project array as well 
@@ -100,13 +98,6 @@ export class UserDataModel extends Listener {
         this.raiseChange();
     }
 
-    //use listeners for models
-    setTaskIds() {
-        this._tasks.forEach(task => {
-            task.id = this._tasks.indexOf(task)
-        });
-    }
-
     //PROJECT CRUD METHODS
 
     get projectsList() {
@@ -160,13 +151,4 @@ export class UserDataModel extends Listener {
         }
         this.raiseChange();
     }
-
-    setProjectIds() {
-        this._projects.forEach(project => {
-            project.id = this._projects.indexOf(project)
-        });
-    }
-
-
-
 }

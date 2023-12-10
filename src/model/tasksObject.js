@@ -20,6 +20,7 @@ export class Task {
     constructor(task) {
         // super();
         this.priorities = [1, 2, 3];
+        //constructor from web form
         if (task instanceof FormData) {
 
             this._title = task.get('title');
@@ -28,9 +29,9 @@ export class Task {
             this._datePosted = new Date();
             this._priority = +task.get('priority');
             this._status = false;
-            this._id;
+            this._id = crypto.randomUUID();
         }
-
+        //constructor from local storage
         else {
             this._title = task._title;
             this._description = task._desscription;
@@ -91,9 +92,6 @@ export class Task {
     }
     get id() {
         return this._id;
-    }
-    set id(value) {
-        this._id = value;
     }
 
     toggleStatus() {

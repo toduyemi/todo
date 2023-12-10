@@ -25,10 +25,6 @@ class AppController {
         //refresh task list
         this.appView.addChangeListener(() => this.appView.displayTaskList(this.getTaskListTrigger(), this.getPageTitleTrigger()));
 
-        this.appModel.addChangeListener(this.appModel.setTaskIds.bind(this.appModel));
-        this.appModel.addChangeListener(this.appModel.setProjectIds.bind(this.appModel));
-        this.appModel.addChangeListener(this.appModel.commit.bind(this.appModel));
-
         //get current id clicked on
         this.appView.bindNavList(this.handleObserveProjectState.bind(this));
 
@@ -37,6 +33,8 @@ class AppController {
         this.appView.bindEditProjectTitle(this.handleEditProject.bind(this));
         this.appView.bindDeleteProject(this.handleDeleteProject.bind(this));
 
+
+        this.appModel.addChangeListener(this.appModel.commit.bind(this.appModel));
         //display initial app data
         this.appModel.raiseChange();
         this.appView.raiseChange();

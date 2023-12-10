@@ -3,7 +3,7 @@ export class Project {
     constructor(project) {
         // super();
         this._title = project._title || project.title;
-        this._id;
+        this._id = crypto.randomUUID();
         this._tasks = typeof project._tasks !== 'undefined' ? project._tasks.map(task => new Task(task)) : [];
     }
 
