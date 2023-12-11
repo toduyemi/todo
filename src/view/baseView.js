@@ -82,8 +82,11 @@ export class AppView extends Listener {
 
         });
         this.projectTitleInput.required = true;
-        this.addButton = this.createElement('button', 'project-btn', 'Add');
-        this.cancelButton = this.createElement('button', 'project-btn', 'Cancel');
+
+        this.projectBtnCtr = this.createElement('div', 'project-btn-ctr');
+        this.tasktBtnCtr = this.createElement('div', 'task-btn-ctr');
+        this.addButton = this.createElement('button', 'add-btn', 'Add');
+        this.cancelButton = this.createElement('button', 'cancel-btn', 'Cancel');
 
         this.sideNavCollapse = false;
         this.createApp();
@@ -150,7 +153,9 @@ export class AppView extends Listener {
         this.homeDiv.append(this.homeUl);
         this.projectsDiv.append(this.projectsUl);
         this.sideNav.append(this.homeDiv, this.projectsDiv, this.addProjectBtn);
-        this.projectForm.append(this.projectTitleInput, this.addButton, this.cancelButton);
+
+        this.projectBtnCtr.append(this.addButton, this.cancelButton)
+        this.projectForm.append(this.projectTitleInput, this.projectBtnCtr);
 
         //app or tasks
         this.appCtr = this.createElement('div', 'app-ctr');
@@ -160,7 +165,9 @@ export class AppView extends Listener {
 
         //task
         this.priorityFieldset.append(this.priorityLegend, this.priorityLow, this.priorityMed, this.priorityHigh);
-        this.taskForm.append(this.taskTitleInput, this.descriptionText, this.taskDueDateInput, this.priorityFieldset, this.submitTaskBtn, this.cancelTaskBtn);
+
+        this.tasktBtnCtr.append(this.submitTaskBtn, this.cancelTaskBtn);
+        this.taskForm.append(this.taskTitleInput, this.descriptionText, this.taskDueDateInput, this.priorityFieldset, this.tasktBtnCtr);
 
         this.body.append(this.appHeader, this.sideNav, this.appCtr);
     }
@@ -363,8 +370,8 @@ export class AppView extends Listener {
 
         //show a default message
         if (projectsList.length === 0) {
-            const def = this.createElement('p');
-            def.textContent = 'No projects! Add new project!';
+            const def = this.createElement('li');
+            def.innerHTML = '<p>No projects! Add new project!</p>';
             this.projectsUl.append(def);
         }
 
