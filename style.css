@@ -99,6 +99,7 @@ nav ul {
 }
 
 #inbox {
+    padding: 0px;
     margin: 0px;
 }
 
@@ -135,30 +136,34 @@ nav ul {
     gap: .8em;
 }
 
+/*task list*/
 .task-list {
-    width: 75vw;
+    width: 100%;
     padding: 0;
 }
 
 .task-ctr {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: .5fr 4fr 1fr 1fr 1fr;
     align-items: center;
     cursor: pointer;
     padding: 0;
     border-left: 10px white solid;
 }
 
-
-
 .task-ctr:hover {
     border-left-color: black;
 }
 
 .task-ctr li {
-
     flex: 0 1 0;
+}
+
+.task-delete,
+.task-edit {
+    justify-self: center;
 }
 
 .task-description {
@@ -179,14 +184,106 @@ nav ul {
 }
 
 /* Add task form */
-.add-task-form {
+.add-task-form,
+.edit-task-form {
+    grid-area: 1/1/2/6;
     width: 80%;
-    display: grid;
-    gap: 1em;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
 
     border: solid 1.5px black;
     padding: .8em;
 
     border-radius: 8px;
+}
+
+form .task-title {
+    height: 2.5em;
+    width: 100%;
+}
+
+form .description-input {
+    height: 9em;
+    width: 100%;
+
+}
+
+.form-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+label>* {
+
+    display: block;
+    margin-top: .3em;
+}
+
+/* Radio buttion styling for task form*/
+.radio-ctr {
+    float: left;
+    margin: 0 5px 0 0;
+    width: 3.5em;
+    height: 2em;
+    position: relative;
+
+
+}
+
+.radio-label,
+.task-priority {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.task-priority {
+    opacity: 0.011;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.task-priority:checked+label {
+    color: aliceblue;
+    border-radius: 4px;
+}
+
+#low-priority:checked+label {
+    background: #4fab5c;
+
+}
+
+#med-priority:checked+label {
+    background: #e6d732;
+
+}
+
+#high-priority:checked+label {
+    background: #db240f;
+
+}
+
+.radio-label {
+
+    z-index: 90;
+    line-height: 1.8em;
+    display: flex;
+    justify-content: center;
+}
+
+/*task form buttons*/
+.task-btn-ctr {
+    display: flex;
+    gap: 2em;
+    align-self: flex-end;
+}
+
+.task-btn {
+    height: 3em;
+    width: 5em;
 }

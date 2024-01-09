@@ -24,7 +24,7 @@ export class Task {
         if (task instanceof FormData) {
 
             this._title = task.get('title');
-            this._description = task.get('description');
+            this._description = task.get('description') ? task.get('description') : "";
             this._dueDate = task.get('due-date');
             this._datePosted = new Date();
             this._priority = +task.get('priority');
@@ -34,7 +34,7 @@ export class Task {
         //constructor from local storage
         else {
             this._title = task._title;
-            this._description = task._desscription;
+            this._description = task._description;
             this._dueDate = task._dueDate;
             this._datePosted = task._datePosted;
             this._priority = task._priority;

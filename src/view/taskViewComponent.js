@@ -32,7 +32,7 @@ export class TaskView {
                 <li class="task-edit"></li>
             </ul>
             <div class="task-description">
-                <p>${this._task.description ? this._description : ""}</p>
+                <p>${this._task.description ? this._task.description : ""}</p>
             </div>
         </li>`;
 

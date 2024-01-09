@@ -24,20 +24,29 @@ export class AppView extends Listener {
             required: 1
         });
         this.taskTitleInput.maxLength = '100';
+        this.taskTitleLabel = this.createElement('label', 'form-label', 'Title:');
+        this.taskTitleLabel.append(this.taskTitleInput);
+
         this.descriptionText = this.createElement('textarea', 'description-input');
         this.descriptionText.setAttribute('placeholder', 'Description...');
-        this.descriptionText.setAttribute('name', 'description')
+        this.descriptionText.setAttribute('name', 'description');
+        this.descriptionLabel = this.createElement('label', 'form-label', 'Description:');
+        this.descriptionLabel.append(this.descriptionText);
 
         this.createInput({
             key: 'taskDueDateInput',
             name: 'due-date',
             type: 'date',
             className: 'task-date',
-            required: 1
+            required: 1,
         });
+
+        this.taskDateLabel = this.createElement('label', 'form-label', 'Due Date:');
+        this.taskDateLabel.append(this.taskDueDateInput);
 
         this.priorityFieldset = this.createElement('fieldset');
         this.priorityLegend = this.createElement('legend', 'priority-legend', 'Priority:');
+
         this.createInput({
             key: 'priorityHigh',
             name: 'priority',
@@ -47,6 +56,8 @@ export class AppView extends Listener {
             required: 1,
             value: 3
         });
+        this.priorityHighLabel = this.createElement('label', 'radio-label', '!!!');
+        this.priorityHighDiv = this.createElement('div', 'radio-ctr');
 
         this.createInput({
             key: 'priorityMed',
@@ -57,6 +68,9 @@ export class AppView extends Listener {
             value: 2
 
         });
+        this.priorityMedLabel = this.createElement('label', 'radio-label', '!!');
+        this.priorityMedDiv = this.createElement('div', 'radio-ctr');
+
         this.createInput({
             key: 'priorityLow',
             name: 'priority',
@@ -65,6 +79,8 @@ export class AppView extends Listener {
             id: 'low-priority',
             value: 1
         });
+        this.priorityLowLabel = this.createElement('label', 'radio-label', '!');
+        this.priorityLowDiv = this.createElement('div', 'radio-ctr');
 
         this.submitTaskBtn = this.createElement('button', 'task-btn', 'Submit');
         this.cancelTaskBtn = this.createElement('button', 'task-btn', 'Cancel');
@@ -84,7 +100,7 @@ export class AppView extends Listener {
         this.projectTitleInput.required = true;
 
         this.projectBtnCtr = this.createElement('div', 'project-btn-ctr');
-        this.tasktBtnCtr = this.createElement('div', 'task-btn-ctr');
+        this.taskBtnCtr = this.createElement('div', 'task-btn-ctr');
         this.addButton = this.createElement('button', 'add-btn', 'Add');
         this.cancelButton = this.createElement('button', 'cancel-btn', 'Cancel');
 
@@ -100,7 +116,7 @@ export class AppView extends Listener {
         this.tasksUl.addEventListener('click', e => this._buildEditProjectForm(e));
         this.tasksUl.addEventListener('click', e => this._expandTask(e));
         this.appMenuIcon.addEventListener('click', () => {
-            this.sideNavCollapse ? this.openNav() : this.closeNav();
+            this.sideNavCollapse ? this._openNav() : this._closeNav();
             this.sideNavCollapse = !this.sideNavCollapse;
         });
     }
@@ -164,16 +180,23 @@ export class AppView extends Listener {
         this.appCtr.append(this.displayHeader, this.tasksUl, this.addTaskBtn)
 
         //task
-        this.priorityFieldset.append(this.priorityLegend, this.priorityLow, this.priorityMed, this.priorityHigh);
+        this.priorityHighDiv.append(this.priorityHigh, this.priorityHighLabel);
+        this.priorityMedDiv.append(this.priorityMed, this.priorityMedLabel);
+        this.priorityLowDiv.append(this.priorityLow, this.priorityLowLabel);
 
-        this.tasktBtnCtr.append(this.submitTaskBtn, this.cancelTaskBtn);
-        this.taskForm.append(this.taskTitleInput, this.descriptionText, this.taskDueDateInput, this.priorityFieldset, this.tasktBtnCtr);
+        this.priorityFieldset.append(this.priorityLegend, this.priorityLowDiv, this.priorityMedDiv, this.priorityHighDiv);
+
+        this.taskDiv = this.createElement('div', 'form-div');
+        this.taskBtnCtr.append(this.submitTaskBtn, this.cancelTaskBtn);
+        this.taskDiv.append(this.priorityFieldset, this.taskBtnCtr);
+        this.taskForm.append(this.taskTitleLabel, this.descriptionLabel, this.taskDateLabel, this.taskDiv);
 
         this.body.append(this.appHeader, this.sideNav, this.appCtr);
     }
 
     _buildAddTaskForm() {
         this.taskForm.className = 'add-task-form';
+        this.taskDueDateInput.valueAsDate = new Date();
         this.appCtr.append(this.taskForm);
         this.addTaskBtn.remove();
         this.raiseChange();
@@ -188,7 +211,7 @@ export class AppView extends Listener {
 
     _buildEditProjectForm(e) {
 
-        if (e.target.parentElement.className === 'task-edit') {
+        if (e.target.parentElement.className === 'task-edit' && !document.querySelector('.edit-task-form')) {
             this.taskForm.className = 'edit-task-form';
             e.target.closest('.task-ctr').replaceChildren(this.taskForm);
             this.raiseChange();
@@ -218,7 +241,13 @@ export class AppView extends Listener {
         this.raiseChange();
 
     }
+    _expandTask(e) {
 
+        if (e.target.matches('.task-title') || e.target.matches('.task-deadline')) {
+            console.log(e.target);
+            e.target.closest('.task-ctr').nextElementSibling.classList.toggle('task-description-open');
+        }
+    }
 
 
 
@@ -288,12 +317,7 @@ export class AppView extends Listener {
         }
     };
 
-    _expandTask(e) {
-        if (e.target.className == 'task-ctr') {
-            console.log(e.target.querySelector('.task-description'));
-            e.target.nextElementSibling.classList.toggle('task-description-open');
-        }
-    }
+
 
 
     bindNavList(handler) {
@@ -349,7 +373,12 @@ export class AppView extends Listener {
 
         })
     }
-
+    // bindOpenTaskDescription() {
+    //     console.log(document.querySelector('.task-ctr'));
+    //     if (document.querySelector('.task-ctr')) {
+    //         document.querySelectorAll('.task-ctr').addEventListener('click', this._expandTask)
+    //     }
+    // }
     bindTaskToggle(handler) {
         this.tasksUl.addEventListener('click', e => {
             if (e.target.parentElement.className === 'task-check') {
@@ -432,13 +461,13 @@ export class AppView extends Listener {
     }
 
 
-    openNav() {
+    _openNav() {
         this.sideNav.classList.remove('close-nav');
         this.body.classList.remove('close-nav-body');
         this.appCtr.classList.remove('close-nav-app-ctr');
     }
 
-    closeNav() {
+    _closeNav() {
         this.sideNav.classList.add('close-nav');
         this.body.classList.add('close-nav-body');
         this.appCtr.classList.add('close-nav-app-ctr');

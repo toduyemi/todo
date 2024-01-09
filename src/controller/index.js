@@ -1,9 +1,7 @@
 import { AppView } from '../view/baseView.js';
 import { UserDataModel } from "../model/model.js";
-
-import '../../style.css';
 import 'normalize.css/'
-
+import '../../style.css';
 
 
 class AppController {
@@ -13,12 +11,12 @@ class AppController {
         this.currentProjectIndex = 'inbox';
         this.currentTaskIndex;
 
-        //add DOM event listeners to bind event listener to forms
+        //add DOM event listeners to bind event listener to components
         this.appView.addChangeListener(() => this.appView.bindAddProjectForm(this.handleAddProject.bind(this)));
         this.appView.addChangeListener(() => this.appView.bindAddTaskForm(this.handleAddTask.bind(this)));
         this.appView.addChangeListener(() => this.appView.bindEditTaskForm(this.handleEditTask.bind(this), this.handleObserveTaskState.bind(this)));
-        this.appView.addChangeListener(() => this.appView.prefillEditTaskForm(this.handleGetTask(this.currentTaskIndex)))
-
+        this.appView.addChangeListener(() => this.appView.prefillEditTaskForm(this.handleGetTask(this.currentTaskIndex)));
+        // this.appView.addChangeListener(() => this.appView.bindOpenTaskDescription.bind(this));
         //refresh list sidenav project list
         this.appView.addChangeListener(() => this.appView.displayProjectList(this.appModel.projectsList));
 
@@ -81,7 +79,7 @@ class AppController {
         return this.appModel.getTask(id);
     }
     handleAddTask(taskData) {
-        this.appModel.addTask(taskData, +this.currentProjectIndex);
+        this.appModel.addTask(taskData, this.currentProjectIndex);
     }
 
     handleDeleteTask(id) {
@@ -98,7 +96,7 @@ class AppController {
 
         //to have page automatically revert to inbox after project is deleted
         //isNaN condition is to prevent valueof 0 from being caught in decision flow
-        if (!this.currentProjectIndex && !Number.isNaN(this.currentProjectIndex)) {
+        if (!this.currentProjectIndex) {
             this.currentProjectIndex = 'inbox'
         }
         this.appView.raiseChange();
