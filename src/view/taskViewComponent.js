@@ -17,12 +17,12 @@ export class TaskView {
 
 
     renderTask() {
-        let taskList = document.querySelector('.task-list');
+        const taskList = document.querySelector('.task-list');
 
 
         /* use innerhtml to create task object for readability; inject task title 
-        from use via textContent to prevent malicious injection*/
-        let taskTemplate = `
+        from use via textContent to prevent malicious injection */
+        const taskTemplate = `
         <li>
             <ul class="task-ctr" data-task-id="${this._task.id}">
                 <li class="task-check" ><input type="checkbox" name="check-toggle" id=""></li>

@@ -1,9 +1,9 @@
+import { id } from 'date-fns/locale';
 import { ProjectView, projectView } from './projectViewComponent';
 import { Listener } from '../helper/parent-class';
 import Menu from '../icons/menu-hamburger-nav-svgrepo-com.svg'
 import Check from '../icons/done-all-svgrepo-com.svg'
 import Trash from '../icons/trash-svgrepo-com.svg';
-import { id } from 'date-fns/locale';
 
 
 export class AppView extends Listener {
@@ -12,7 +12,7 @@ export class AppView extends Listener {
         this.body = document.body;
 
 
-        //task form elements
+        // task form elements
 
         this.taskForm = this.createElement('form', 'add-task-form');
         this.createInput({
@@ -85,7 +85,7 @@ export class AppView extends Listener {
         this.submitTaskBtn = this.createElement('button', 'task-btn', 'Submit');
         this.cancelTaskBtn = this.createElement('button', 'task-btn', 'Cancel');
 
-        //project form elements
+        // project form elements
         this.addProjectBtn = this.createElement('button', 'nav-btn', 'Add Project');
         this.projectForm = this.createElement('form', 'add-project-form');
         this.createInput({
@@ -142,7 +142,7 @@ export class AppView extends Listener {
     }
 
     createApp() {
-        //header
+        // header
         this.appMenuIcon = new Image();
         this.appMenuIcon.src = Menu;
 
@@ -157,7 +157,7 @@ export class AppView extends Listener {
 
         this.appHeader.append(this.appMenuIcon, this.appTitleCtr);
 
-        //sideNav
+        // sideNav
         this.sideNav = this.createElement('nav');
         this.projectsDiv = this.createElement('div', '', '<h2>Projects</h2>');
         this.projectsUl = this.createElement('ul', 'project-list');
@@ -173,13 +173,13 @@ export class AppView extends Listener {
         this.projectBtnCtr.append(this.addButton, this.cancelButton)
         this.projectForm.append(this.projectTitleInput, this.projectBtnCtr);
 
-        //app or tasks
+        // app or tasks
         this.appCtr = this.createElement('div', 'app-ctr');
         this.displayHeader = this.createElement('h2', 'project-title', 'Inbox')
         this.tasksUl = this.createElement('ul', 'task-list');
         this.appCtr.append(this.displayHeader, this.tasksUl, this.addTaskBtn)
 
-        //task
+        // task
         this.priorityHighDiv.append(this.priorityHigh, this.priorityHighLabel);
         this.priorityMedDiv.append(this.priorityMed, this.priorityMedLabel);
         this.priorityLowDiv.append(this.priorityLow, this.priorityLowLabel);
@@ -241,10 +241,11 @@ export class AppView extends Listener {
         this.raiseChange();
 
     }
+
     _expandTask(e) {
 
         if (e.target.matches('.task-title') || e.target.matches('.task-deadline')) {
-            console.log(e.target);
+            ;
             e.target.closest('.task-ctr').nextElementSibling.classList.toggle('task-description-open');
         }
     }
@@ -254,14 +255,14 @@ export class AppView extends Listener {
 
     bindAddProjectForm(handler) {
         if (document.querySelector('.add-project-form')) {
-            //add reference to anonymous arrow function so i can remove event Listener
+            // add reference to anonymous arrow function so i can remove event Listener
             this.projectForm.addEventListener('submit', this.projectForm.binder = e => {
                 e.preventDefault();
 
                 if (this.projectTitleInput.value) {
                     handler({ title: this.projectTitleInput.value });
 
-                    //clean up successful submit
+                    // clean up successful submit
                     this._removeProjectForm();
                 }
 
@@ -279,7 +280,7 @@ export class AppView extends Listener {
 
     bindEditProjectTitle(handler) {
         this.displayHeader.addEventListener('input', () => {
-            let newTitle = this.displayHeader.textContent;
+            const newTitle = this.displayHeader.textContent;
             handler(newTitle);
             this.raiseChange();
         })
@@ -288,7 +289,7 @@ export class AppView extends Listener {
     bindDeleteProject(handler) {
         this.projectsUl.addEventListener('click', e => {
             if (e.target.className == 'project-delete') {
-                let projectId = e.target.closest('.project-list-item').id;
+                const projectId = e.target.closest('.project-list-item').id;
                 handler(projectId);
                 this.raiseChange();
             }
@@ -301,7 +302,7 @@ export class AppView extends Listener {
 
             this.taskForm.addEventListener('submit', this.taskForm.binder = e => {
                 e.preventDefault();
-                let taskId = e.target.closest('.task-ctr').dataset.taskId;
+                const {taskId} = e.target.closest('.task-ctr').dataset;
                 handler(new FormData(this.taskForm), taskId);
                 this._removeTaskForm();
 
@@ -311,7 +312,7 @@ export class AppView extends Listener {
                 e.preventDefault();
                 this._removeTaskForm();
             })
-            //store id to retrieve info of task of interest 
+            // store id to retrieve info of task of interest 
             // having this shoved in here is givingme very spaghetti vibes, id like to implement somethign a bit more clean
             handler2(this.taskForm.closest('.task-ctr').dataset.taskId);
         }
@@ -321,7 +322,7 @@ export class AppView extends Listener {
 
 
     bindNavList(handler) {
-        //only run if a project has been added
+        // only run if a project has been added
         // stores data-index
         this.homeUl.addEventListener('click', e => {
             handler(e.target);
@@ -340,7 +341,7 @@ export class AppView extends Listener {
         if (document.querySelector('.edit-task-form')) {
             this.taskForm.title.value = task.title;
             this.taskForm.description.value = task.description;
-            console.log(this.taskForm.elements)
+            
             this.taskForm['due-date'].value = task.dueDate;
             document.querySelector(`fieldset [value="${task.priority}"]`).checked = true;
         }
@@ -363,6 +364,7 @@ export class AppView extends Listener {
             })
         }
     }
+
     bindDeleteTaskItem(handler) {
         this.tasksUl.addEventListener('click', e => {
             if (e.target.parentElement.className === 'task-delete') {
@@ -373,6 +375,7 @@ export class AppView extends Listener {
 
         })
     }
+
     // bindOpenTaskDescription() {
     //     console.log(document.querySelector('.task-ctr'));
     //     if (document.querySelector('.task-ctr')) {
@@ -390,23 +393,23 @@ export class AppView extends Listener {
 
 
 
-    //listener function
+    // listener function
     displayProjectList(projectsList) {
 
         while (this.projectsUl.firstChild) {
             this.projectsUl.textContent = '';
         }
 
-        //show a default message
+        // show a default message
         if (projectsList.length === 0) {
             const def = this.createElement('li');
             def.innerHTML = '<p>No projects! Add new project!</p>';
             this.projectsUl.append(def);
         }
 
-        //create project list item nodes
+        // create project list item nodes
         else {
-            console.log(projectsList);
+            ;
             projectsList.map(project => {
                 const projectLi = this.createElement('li', 'project-list-item');
                 projectLi.id = project.id;
@@ -419,7 +422,7 @@ export class AppView extends Listener {
                 deleteProjectIcon.src = Trash;
                 deleteProjectIcon.className = 'project-delete'
 
-                //because event targetting was seeing span for handleObserveProjectState
+                // because event targetting was seeing span for handleObserveProjectState
                 spanTitle.id = project.id
 
                 projectLi.append(spanTitle, deleteProjectIcon);
@@ -431,9 +434,9 @@ export class AppView extends Listener {
     }
 
 
-    //listener function
+    // listener function
     displayTaskList(taskList, projectTitle) {
-        //to prevent this function from replacing the edit-form while listener functions are being called to bind edit-form
+        // to prevent this function from replacing the edit-form while listener functions are being called to bind edit-form
         if (!document.querySelector('.edit-task-form')) {
             while (this.tasksUl.firstChild) {
                 this.tasksUl.textContent = '';
@@ -448,7 +451,7 @@ export class AppView extends Listener {
             else {
                 new ProjectView(taskList);
             }
-            //display title of page
+            // display title of page
             if (projectTitle !== 'Inbox') {
                 this.displayHeader.contentEditable = true;
             }

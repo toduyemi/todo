@@ -1,37 +1,41 @@
-import { Task } from "./tasksObject";
+import { Task } from './tasksObject';
+
 export class Project {
-    constructor(project) {
-        // super();
-        this._title = project._title || project.title;
-        this._id = crypto.randomUUID();
-        this._tasks = typeof project._tasks !== 'undefined' ? project._tasks.map(task => new Task(task)) : [];
-    }
+  constructor(project) {
+    // super();
+    this._title = project._title || project.title;
+    this._id = crypto.randomUUID();
+    this._tasks =
+      typeof project._tasks !== 'undefined'
+        ? project._tasks.map((task) => new Task(task))
+        : [];
+  }
 
-    get title() {
-        return this._title;
-    }
+  get title() {
+    return this._title;
+  }
 
-    set title(value) {
-        this._title = value;
-    }
+  set title(value) {
+    this._title = value;
+  }
 
-    get id() {
-        return this._id;
-    }
-    set id(value) {
-        this._id = value;
-    }
+  get id() {
+    return this._id;
+  }
 
-    get tasks() {
-        return this._tasks.slice();
-    }
+  set id(value) {
+    this._id = value;
+  }
 
-    set tasks(value) {
-        //ensure input is a truthy object that is not an array
+  get tasks() {
+    return this._tasks.slice();
+  }
 
-        if (value instanceof Task) {
-            this._tasks.push(value);
-        }
+  set tasks(value) {
+    // ensure input is a truthy object that is not an array
+
+    if (value instanceof Task) {
+      this._tasks.push(value);
     }
+  }
 }
-
